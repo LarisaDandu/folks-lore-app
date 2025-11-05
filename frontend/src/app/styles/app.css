@@ -1,0 +1,48 @@
+:root {
+--accent-1: #FF6E20;
+--accent-2: #5095FD;
+--accent-3: #56FFF6;
+--background: #08101B;
+--text: #DBDDF5;
+--dark: initial;
+--delete-button: #FF2020;
+--filter: none;
+--fire-gradient-1: #FF6E20;
+--fire-gradient-2: #5095FD;
+}
+
+body.light-mode {
+  --accent-1: #803D19;
+  --accent-2:#1A4280;
+  --accent-3: #1A807B;
+  --background: #DBDDF5;
+  --text: #08101B;
+  --delete-button: #C82626;
+  --fire-gradient-1: #FF6E20;
+  --fire-gradient-2: #5095FD;
+}
+
+body.low-sat-dark {
+  --accent-1: #CC8762;
+  --accent-2: #7E9DCC;
+  --accent-3: #6ACCC7;
+  --background: #0C0F14;
+  --text: #DBDDF5;
+  --delete-button: #FF6969;
+  --fire-gradient-1: #CC8762;
+  --fire-gradient-2: #7E9DCC;
+}
+
+body.low-sat-light {
+  --accent-1: #80543D;
+  --accent-2: #4E6280;
+  --accent-3: #42807C;
+  --background: #DBDDF5;
+  --text: #0C0F14;
+  --delete-button: #FF6969;
+  --fire-gradient-1: #CC8762;
+  --fire-gradient-2: #7E9DCC;
+}
+
+body { margin:0; font-family: Inter, system-ui, sans-serif; background:var(--background); color:var(--text);}
+.page { padding: 1rem; }
