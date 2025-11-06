@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import "../../styles/Profile.css";
 import backIcon from "../../assets/icons/backarrow.svg"; 
-import settingsIcon from "../../assets/icons/settings.svg";
 import editButton from "../../assets/icons/edit.svg";
 import Tails from "../../assets/images/Tails.png";
 import Kitty from "../../assets/images/Kitty.jpeg";
 
 export default function Profile() {
   const [interests, setInterests] = useState([
-    "aaaaa",
-    "bbfs",
-    "sfssdvsd",
-    "svsvfsfss",
-    "sdvv rgerge",
-    "sdvv rgeradage",
-    "sdvrge",
-    "sdvv rge",
-    "sdvv da rgerge",
+    "Mythology",
+    "Horror",
+    "Fairy Tale",
+    "Old",
+    "Modern",
+    "Family Friendly",
+    "Urban",
+    "Asia",
+    "Europe",
+    "Africa",
+    "South America",
+    "North America",
+    "Australia and Oceania",
   ]);
 
   const [selected, setSelected] = useState([]);
@@ -54,11 +57,6 @@ export default function Profile() {
             className="avatar-img"
           />
         </div>
-
-        {/* Settings button */}
-        <button className="settings-btn">
-          <img src={settingsIcon} alt="Settings" className="icon" />
-        </button>
       </div>
 
       <div className="profile-info">
@@ -68,7 +66,7 @@ export default function Profile() {
             <img src={editButton} alt="Edit username" />
           </button>
         </div>
-        <p className="user-handle">@AlexIsAMango • Joined 20.10.2025</p>
+        <p className="user-handle">Joined 20.10.2025</p>
 
         <div className="stats">
           <div className="stat">
