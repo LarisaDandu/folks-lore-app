@@ -28,8 +28,7 @@
     filter: brightness(0.8);
   }
   
-  .back-btn,
-  .settings-btn {
+  .back-btn {
     position: absolute;
     background: none;
     border: none;
@@ -41,18 +40,6 @@
   .back-btn {
     top: 15px;
     left: 15px;
-  }
-  
-  .settings-btn {
-    bottom: -50px;
-    right: 15px;
-    background-color: var(--background);
-    border-radius: 50%;
-    padding: 10px;
-    border: 2px solid transparent;
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
-    z-index: 20;
   }
 
 .hero-edit-btn {
@@ -67,8 +54,8 @@
   }
   
   .hero-edit-btn img {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     opacity: 0.9;
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
@@ -117,6 +104,7 @@
     margin: 5px 0;
     font-weight: 700;
     background: var(--gradient-accent);
+    background-clip: text;  
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -124,7 +112,7 @@
   .user-handle {
     font-size: 0.9rem;
     color: #8b949e;
-    margin-bottom: 15px;
+    margin-top: 0px;
   }
   .username-row {
     display: inline-flex;
@@ -141,15 +129,10 @@
   }
   
   .username-edit-btn img {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     opacity: 0.8;
     transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-  
-  .username-edit-btn:hover img {
-    opacity: 1;
-    transform: scale(1.1);
   }
   
   /* --- STATS --- */
@@ -171,6 +154,7 @@
     font-weight: 600;
     font-size: 1rem;
     background: var(--gradient-accent);
+    background-clip: text;  
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -193,6 +177,7 @@
     font-size: 1.2rem;
     margin-bottom: 10px;
     background: var(--gradient-accent);
+    background-clip: text;  
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }

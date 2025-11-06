@@ -1,44 +1,132 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "../../styles/Profile.css";
-import backIcon from "../../assets/icons/backarrow.svg"; 
-import settingsIcon from "../../assets/icons/settings.svg";
+
+import backIcon from "../../assets/icons/backarrow.svg";
 import editButton from "../../assets/icons/edit.svg";
 import Tails from "../../assets/images/Tails.png";
 import Kitty from "../../assets/images/Kitty.jpeg";
 
 export default function Profile() {
-  const [interests, setInterests] = useState([
-    "aaaaa",
-    "bbfs",
-    "sfssdvsd",
-    "svsvfsfss",
-    "sdvv rgerge",
-    "sdvv rgeradage",
-    "sdvrge",
-    "sdvv rge",
-    "sdvv da rgerge",
-  ]);
+  // --- defaults + localStorage restore ---
+  const [coverSrc, setCoverSrc] = useState(
+    () => localStorage.getItem("profile.coverSrc") || Tails
+  );
+  const [avatarSrc, setAvatarSrc] = useState(
+    () => localStorage.getItem("profile.avatarSrc") || Kitty
+  );
+  const [username, setUsername] = useState(
+    () => localStorage.getItem("profile.username") || "_Al3x_"
+  );
+  const [isEditingName, setIsEditingName] = useState(false);
 
+  const [interests, setInterests] = useState([
+    "Mythology",
+    "Horror",
+    "Fairy Tale",
+    "Old",
+    "Modern",
+    "Family Friendly",
+    "Urban",
+    "Asia",
+    "Europe",
+    "Africa",
+    "South America",
+    "North America",
+    "Australia and Oceania",
+  ]);
   const [selected, setSelected] = useState([]);
+
+  // hidden inputs to open phone gallery
+  const coverInputRef = useRef(null);
+  const avatarInputRef = useRef(null);
 
   const toggleInterest = (interest) => {
     setSelected((prev) =>
-      prev.includes(interest)
-        ? prev.filter((i) => i !== interest)
-        : [...prev, interest]
+      prev.includes(interest) ? prev.filter((i) => i !== interest) : [...prev, interest]
     );
+  };
+
+  // helpers
+  const fileToDataURL = (file) =>
+    new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+
+  const handlePick = async (e, kind) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("Please choose an image file.");
+      return;
+    }
+    // (optional) basic size guard so localStorage doesn't overflow too fast
+    if (file.size > 2.5 * 1024 * 1024) {
+      alert("That image is a bit large. Try one under ~2.5MB.");
+      return;
+    }
+    const dataUrl = await fileToDataURL(file);
+
+    if (kind === "cover") {
+      setCoverSrc(dataUrl);
+      localStorage.setItem("profile.coverSrc", dataUrl);
+    } else {
+      setAvatarSrc(dataUrl);
+      localStorage.setItem("profile.avatarSrc", dataUrl);
+    }
+    e.target.value = ""; // allow re-selecting the same file later
+  };
+
+  const startEditName = () => setIsEditingName(true);
+  const commitName = (value) => {
+    const v = value.trim() || username;
+    setUsername(v);
+    localStorage.setItem("profile.username", v);
+    setIsEditingName(false);
+  };
+  const onNameKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      commitName(e.currentTarget.value);
+    } else if (e.key === "Escape") {
+      setIsEditingName(false);
+    }
   };
 
   return (
     <div className="profile-container">
+      {/* Hidden inputs for gallery */}
+      <input
+        ref={coverInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        hidden
+        onChange={(e) => handlePick(e, "cover")}
+      />
+      <input
+        ref={avatarInputRef}
+        type="file"
+        accept="image/*"
+        capture="user"
+        hidden
+        onChange={(e) => handlePick(e, "avatar")}
+      />
+
       <div className="hero-section">
-        <img
-          src={Tails}
-          alt="background"
-          className="hero-bg"
-        />
-         <button className="hero-edit-btn">
-          <img src={editButton} alt="Edit background" />
+        {/* background image (default Tails, user can replace) */}
+        <img src={coverSrc} alt="background" className="hero-bg" />
+
+        {/* edit pencil in top-right of hero */}
+        <button
+          className="hero-edit-btn"
+          onClick={() => coverInputRef.current?.click()}
+          aria-label="Change background image"
+          title="Change background image"
+        >
+          <img src={editButton} alt="" />
         </button>
 
         {/* Back button */}
@@ -46,29 +134,46 @@ export default function Profile() {
           <img src={backIcon} alt="Back" className="icon" />
         </button>
 
-        {/* Avatar */}
-        <div className="avatar-wrapper">
-          <img
-            src={Kitty}
-            alt="avatar"
-            className="avatar-img"
-          />
+        {/* Avatar (whole circle tappable to change) */}
+        <div
+          className="avatar-wrapper"
+          onClick={() => avatarInputRef.current?.click()}
+          role="button"
+          aria-label="Change avatar"
+          tabIndex={0}
+          onKeyDown={(e) => (e.key === "Enter" ? avatarInputRef.current?.click() : null)}
+        >
+          <img src={avatarSrc} alt="avatar" className="avatar-img" />
         </div>
-
-        {/* Settings button */}
-        <button className="settings-btn">
-          <img src={settingsIcon} alt="Settings" className="icon" />
-        </button>
       </div>
 
       <div className="profile-info">
         <div className="username-row">
-          <h1 className="username">_Al3x_</h1>
-          <button className="username-edit-btn">
-            <img src={editButton} alt="Edit username" />
-          </button>
+          {isEditingName ? (
+            <input
+              autoFocus
+              defaultValue={username}
+              className="username-input"
+              onBlur={(e) => commitName(e.target.value)}
+              onKeyDown={onNameKeyDown}
+              aria-label="Edit username"
+            />
+          ) : (
+            <>
+              <h1 className="username">{username}</h1>
+              <button
+                className="username-edit-btn"
+                onClick={startEditName}
+                aria-label="Edit username"
+                title="Edit username"
+              >
+                <img src={editButton} alt="" />
+              </button>
+            </>
+          )}
         </div>
-        <p className="user-handle">@AlexIsAMango • Joined 20.10.2025</p>
+
+        <p className="user-handle">Joined 20.10.2025</p>
 
         <div className="stats">
           <div className="stat">
@@ -88,10 +193,9 @@ export default function Profile() {
             <button
               key={index}
               onClick={() => toggleInterest(interest)}
-              className={`interest-btn ${
-                selected.includes(interest) ? "selected" : ""
-              }`}
+              className={`interest-btn ${selected.includes(interest) ? "selected" : ""}`}
             >
+              
               {interest}
             </button>
           ))}
@@ -100,4 +204,3 @@ export default function Profile() {
     </div>
   );
 }
-
