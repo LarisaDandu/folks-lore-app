@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import "../styles/Chatbot.css";
+import "../styles/ChallengeTopBar.css";
 import storytellerImg from "../assets/images/storyteller.png";
+import ChallengeTopBar from "../components/ChallengeTopBar";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
@@ -49,7 +51,6 @@ const Chatbot = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 👇 Smooth scroll to bottom on new messages
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
@@ -111,6 +112,9 @@ const Chatbot = () => {
 
   return (
     <div className="chat-wrapper">
+      {/* 🧭 Challenge Top Bar */}
+      <ChallengeTopBar onBack={() => window.history.back()} />
+
       <div className="fire-glow"></div>
       <div className="storyteller-container">
         <img src={storytellerImg} alt="Storyteller" className="storyteller-image" />
