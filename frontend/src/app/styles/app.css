@@ -9,6 +9,7 @@
 --filter: none;
 --fire-gradient-1: #FF6E20;
 --fire-gradient-2: #5095FD;
+--font-main: 'Lato', sans-serif;
 }
 
 body.light-mode {
