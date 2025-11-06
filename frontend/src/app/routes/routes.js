@@ -4,7 +4,7 @@ export const ROUTES = {
   LIBRARY: "/library",
   YOUR_LIBRARY: "/library/your",
   NOTIFICATIONS: "/notifications",
-  STORY: "/story/:id",
+  STORY: "/story",
   DAILY_CHALLENGE: "/daily-challenge",
   PROFILE: "/profile",
   EDIT_PROFILE: "/profile/edit",

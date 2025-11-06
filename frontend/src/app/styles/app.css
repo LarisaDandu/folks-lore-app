@@ -45,5 +45,5 @@ body.low-sat-light {
   --fire-gradient-2: #7E9DCC;
 }
 
-body { margin:0; font-family: Inter, system-ui, sans-serif; background:var(--background); color:var(--text);}
+body { margin:0; font-family: Inter, system-ui, sans-serif; background:var(--text); color:var(--text);}
 .page { padding: 1rem; }

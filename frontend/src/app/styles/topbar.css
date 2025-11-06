@@ -1,228 +1,175 @@
-/* topbar.css - drop into src/app/styles/topbar.css */
+@import url("app.css");
 
-/* use your variable for background; default fallback */
 :root {
-  --topbar-bg: var(--background);
-  --panel-bg: rgba(6, 12, 20, 0.95);
-  --panel-fg: #ffffff;
-  --muted: rgba(255,255,255,0.7);
+  --accent: #4fd3ff;
+  --accent-2: #5aa6ff;
 }
 
-/* root bounding box */
-.topbar-root {
-  position: fixed;  /* sticks at top */
-  top: 0;
-  left: 0;
+/* Topbar container & clip-path */
+.folk-topbar {
   width: 100%;
-  height: 60px;     /* adjust to your design */
-  background-color: var(--collection-1-background);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  z-index: 50;      /* above page content */
-}
-
-/* clipped shape container (use clip-path to create a custom topbar shape) */
-.topbar-clip {
-  width: 100%;
-  max-width: 1100px; /* adapt to your layout */
-  background: var(--topbar-bg);
-  padding: 12px 16px;
-  clip-path: polygon(0 0, 100% 0, 100% 72%, 60% 100%, 40% 100%, 0 72%); /* subtle angled bottom */
-  display: flex;
-  align-items: flex-start;
-  position: relative;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
-}
-
-/* user icon */
-.topbar-user {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  margin-right: auto;
-  cursor: pointer;
-  transition: transform 220ms ease;
+  background: url('../assets/wave-shape.svg') no-repeat center top;
+  background-size: cover; /* or '100% 100%' if it should stretch */
+  padding: 68px 20px 20px 20px;
+  box-sizing: border-box;
   position: relative;
   z-index: 60;
 }
-.topbar-user.menu-open { transform: translateX(calc( -75% )); }
 
-/* user icon graphics */
-.topbar-user-icon,
-.topbar-avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: block;
-  object-fit: cover;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
-  padding: 6px;
-  box-sizing: border-box;
-}
-
-/* search wrapper on the right */
-.topbar-search-wrap {
-  margin-left: auto;
+.folk-topbar-inner {
   display: flex;
-  align-items: center;
-  position: relative;
-}
-
-/* the search box container (collapses / expands leftwards) */
-.search-container {
-  display: flex;
-  align-items: center;
+  align-items: flex-start; /* aligned at top */
+  justify-content: space-between;
   gap: 8px;
-  position: relative;
-  width: 48px; /* collapsed width = just icon */
-  transition: width 240ms cubic-bezier(.2,.9,.3,1);
-  overflow: visible;
 }
 
-/* when open, expand leftwards by increasing width and aligning the input */
-.search-container.open {
-  width: 360px; /* expanded total width */
-}
-
-/* search icon button */
-.search-icon-btn {
+/* User icon on left (slightly bigger) */
+.folk-user-wrap {
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: transparent;
-  border: none;
+  margin-top: 4px;
+  transition: transform 260ms cubic-bezier(.2,.9,.3,1);
   cursor: pointer;
-  padding: 6px;
-  color: var(--panel-fg);
 }
-.search-icon-btn img { width: 22px; height: 22px; filter: invert(1) brightness(1.2); }
+.folk-user-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: none;
+  background: none;
+}
 
-/* input wrapper (rounded rectangle) - visible when expanded */
-.search-input-wrapper {
-  position: absolute;
-  right: 0;
-  height: 48px;
+/* Search area on right */
+.folk-search-wrap {
+  margin-top: 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.04);
-  box-sizing: border-box;
-  transform-origin: right center;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 150ms ease, pointer-events 150ms ease;
 }
 
-/* show input when open */
-.search-container.open .search-input-wrapper {
-  pointer-events: auto;
-  opacity: 1;
-  right: 48px; /* so input sits left of the icon */
-  width: calc(100% - 64px);
-}
-
-/* actual input */
-.topbar-search-input {
-  flex: 1;
-  border: none;
-  outline: none;
+/* collapsed icon */
+.folk-search-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   background: transparent;
-  color: var(--panel-fg);
-  font-size: 15px;
-  padding: 6px 8px;
-}
-
-/* send button inside input wrapper */
-.search-send-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.03);
-  border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  border: none;
 }
-.search-send-btn img { width: 18px; height: 18px; filter: invert(1); }
+.folk-search-btn img { width: 30px; height: 30px;}
 
-/* ========== Sliding menu panel (right side) ========== */
-.topbar-menu-panel {
+/* expanded search bar (extends leftwards visually, but placed right) */
+.folk-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  border-radius: 40px;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--background, var(--backgroud)) 0 0) padding-box,
+    linear-gradient(-90deg, var(--accent-3), var(--accent-2)) border-box;
+  min-width: 260px;
+  max-width: 420px;
+  transform-origin: right center;
+}
+
+/* left icon inside search bar */
+.folk-search-left-icon {
+   width: 25px; 
+   height: 25px;
+   fill: #4fd3ff;
+  }
+
+/* input */
+.folk-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 16px;
+  flex: 1;
+}
+
+/* send button */
+.folk-search-send { background: transparent; border: none; cursor: pointer; }
+.folk-search-send img { width: 30px; height: 30px}
+
+/* =========== MENU =========== */
+/* overlay (dim but menu does not cover full screen) */
+.folk-menu-overlay {
   position: fixed;
-  top: 12px;
-  right: 12px;
-  width: 0;
-  max-width: 75%; /* visible covers up to 75% of screen width */
-  height: calc(100vh - 40px);
-  transform: translateX(100%);
-  transition: transform 220ms cubic-bezier(.2,.9,.3,1), width 160ms ease;
-  z-index: 55;
+  inset: 0;
+  z-index: 70;
   pointer-events: none;
 }
-.topbar-menu-panel.visible {
-  width: min(780px, 75%);
-  transform: translateX(0);
-  pointer-events: auto;
-}
 
-/* internal panel appearance */
-.topbar-menu-panel .menu-inner {
-  width: 100%;
-  height: 100%;
-  background: var(--panel-bg);
-  color: var(--panel-fg);
-  border-radius: 12px 0 0 12px;
-  box-shadow: -8px 18px 40px rgba(0,0,0,0.5);
-  padding: 16px;
+/* panel (slides from LEFT — CHANGED) */
+.folk-menu-overlay .folk-menu-panel {
+  position: absolute;
+  top: 0;
+  left: 0; /* 👈 instead of right: 0 */
+  height: 100vh;
+  background: var(--background);
+  box-shadow: 10px 20px 60px rgba(0,0,0,0.6); /* flipped shadow direction */
+  padding: 22px;
+  box-sizing: border-box;
+  transform: translateX(-110%); /* 👈 slide out to the left */
+  transition: transform 300ms cubic-bezier(.2,.9,.3,1);
+  pointer-events: auto;
   overflow-y: auto;
 }
 
+/* overlay open */
+.folk-menu-overlay.open {
+  background: rgba(0,0,0,0.24); /* dim */
+  pointer-events: auto;
+}
+.folk-menu-overlay.open .folk-menu-panel {
+  transform: translateX(0); /* 👈 slide in from the left */
+}
+
 /* menu header */
-.menu-header { display:flex; align-items:center; gap:12px; padding-bottom:8px; }
-.menu-avatar-row { display:flex; align-items:center; gap:12px; }
-.menu-avatar { width:64px; height:64px; border-radius:50%; object-fit:cover; }
+.menu-head { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
+.menu-avatar-placeholder img { width:64px; height:64px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,0.06); }
+.menu-auth-buttons { display:flex; flex-direction:column; gap:8px; margin-left:8px; }
+.btn-signin { background: linear-gradient(90deg,var(--accent),var(--accent-2)); color: #00131a; border:none; padding:10px 18px; border-radius:24px; font-weight:700; cursor:pointer; }
+.btn-signup { background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--accent); padding:8px 16px; border-radius:20px; cursor:pointer; }
 
-/* user info */
-.menu-user-info { display:flex; flex-direction:column; }
-.menu-username { font-weight:700; font-size:16px; }
-.menu-email { font-size:13px; color:var(--muted); }
-
-/* rows and groups */
-.menu-row { display:flex; align-items:center; justify-content:space-between; padding:10px 8px; cursor:pointer; border-radius:8px; }
-.menu-row.with-icon { gap:12px; }
+/* body rows */
+.menu-body { margin-top:6px; display:flex; flex-direction:column; gap:8px; }
+.menu-row { display:flex; align-items:center; justify-content:space-between; padding:10px 8px; border-radius:8px; cursor:pointer; }
 .menu-row-left { display:flex; align-items:center; gap:12px; }
-.menu-icon { width:22px; height:22px; display:inline-block; text-align:center; }
-.menu-icon-flag { width:20px; height:14px; object-fit:cover; }
-
-/* sublists */
-.menu-sublist { padding-left:18px; display:flex; flex-direction:column; gap:8px; margin-top:8px; margin-bottom:8px; }
-.menu-subitem { display:flex; align-items:center; justify-content:space-between; padding:8px 6px; border-radius:6px; background:transparent; border:none; color:var(--panel-fg); }
-
-/* buttons */
-.menu-btn { padding:8px 12px; border-radius:8px; border:none; background:transparent; color:var(--panel-fg); cursor:pointer; }
-.menu-btn.primary { background: rgba(255,255,255,0.06); font-weight:700; }
+.menu-icon { width:20px; height:20px; opacity:0.9; }
+.menu-sublist { padding-left:18px; display:flex; flex-direction:column; gap:8px; margin:6px 0 8px 0; }
+.menu-subitem { display:flex; align-items:center; justify-content:space-between; padding:8px; border-radius:8px; background:transparent; color:#eaf6ff; }
 
 /* divider */
-.menu-divider { height:1px; background: rgba(255,255,255,0.04); margin:12px 0; }
+.menu-divider { height:1px; background:rgba(255,255,255,0.03); margin:12px 0; }
 
-/* footer area */
-.menu-footer { padding-top:12px; }
+/* section title */
+.menu-section-title { color:var(--accent); margin-top:12px; font-weight:700; }
 
-/* responsive: shrink on smaller screens */
-@media (max-width: 640px) {
-  .topbar-clip { padding: 10px; clip-path: polygon(0 0, 100% 0, 100% 78%, 50% 100%, 0 78%); }
-  .topbar-user { width:48px; height:48px; }
-  .search-container.open { width: 260px; }
-  .topbar-menu-panel.visible { width: 95%; right: 8px; }
+/* toggles (switch) */
+.switch { position:relative; width:44px; height:24px; display:inline-block; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; inset:0; background:#0d2b3a; border-radius:999px; border:1px solid rgba(255,255,255,0.06); transition:0.22s; }
+.slider:before { content:""; position:absolute; width:18px; height:18px; background:var(--accent); border-radius:50%; top:2px; left:3px; transition:0.22s; box-shadow:0 2px 6px rgba(0,0,0,0.5); }
+.switch input:checked + .slider { background: linear-gradient(90deg,var(--accent),var(--accent-2)); }
+.switch input:checked + .slider:before { transform: translateX(20px); background:#06121a; }
+
+/* small items */
+.menu-username { font-weight:700; color:var(--accent); }
+.menu-email { color:var(--text); font-size:13px; }
+
+/* responsive tweaks */
+@media (max-width: 720px) {
+  .folk-search-bar { min-width: 200px; max-width: calc(100vw - 120px); }
+  .folk-user-wrap { width:56px; height:56px; }
 }
