@@ -1,0 +1,266 @@
+@import url("./app.css");
+
+/* === 🔮 Core Layout === */
+.chat-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #08101B;
+  color: #DBDDF5;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === 🧙 Storyteller === */
+.storyteller-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 1; /* make sure glow appears above this layer */
+}
+
+.storyteller-image {
+  height: 75vh;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 15px #5095FD40);
+}
+
+/* === 🔥 Reversed Warm Fire Glow (Yellow Core → Red Edge) === */
+.fire-glow {
+  position: absolute;
+  bottom: 21vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 420px;
+  height: 240px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 235, 150, 0.95) 0%,   /* bright yellow core */
+    rgba(255, 190, 80, 0.8) 25%,    /* warm golden orange */
+    rgba(255, 110, 30, 0.55) 55%,   /* soft glowing orange-red */
+    rgba(180, 40, 10, 0.3) 75%,     /* deep ember red fade */
+    rgba(8, 16, 27, 0) 100%         /* fully fades to background */
+  );
+  filter: blur(100px);
+  opacity: 1;
+  mix-blend-mode: screen;
+  animation: fireFlicker 3.2s ease-in-out infinite alternate;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* === 🔥 Secondary subtle ambient glow === */
+.fire-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 240, 160, 0.6) 10%,   /* inner yellow shimmer */
+    rgba(255, 160, 60, 0.35) 40%,   /* mid orange tone */
+    rgba(180, 50, 20, 0.2) 70%,     /* outer red haze */
+    rgba(8, 16, 27, 0) 100%
+  );
+  filter: blur(100px);
+  opacity: 0.;
+  mix-blend-mode: overlay;
+  animation: fireHueShift 5s ease-in-out infinite alternate;
+}
+
+/* === 🔥 Flicker Animation === */
+@keyframes fireFlicker {
+  0% {
+    opacity: 0.8;
+    transform: translateX(-50%) scale(0.9);
+    filter: blur(90px) brightness(0.9);
+  }
+  25% {
+    opacity: 0.95;
+    transform: translateX(-50%) scale(1.03);
+    filter: blur(105px) brightness(1.05);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.08);
+    filter: blur(120px) brightness(1.2);
+  }
+  75% {
+    opacity: 0.9;
+    transform: translateX(-50%) scale(1);
+    filter: blur(100px) brightness(1);
+  }
+  100% {
+    opacity: 0.85;
+    transform: translateX(-50%) scale(0.92);
+    filter: blur(110px) brightness(0.95);
+  }
+}
+
+/* === 🔥 Subtle hue shift for realism === */
+@keyframes fireHueShift {
+  0% { filter: hue-rotate(0deg) saturate(1); }
+  50% { filter: hue-rotate(-10deg) saturate(1.2); }
+  100% { filter: hue-rotate(10deg) saturate(1.05); }
+}
+
+
+/* === 💬 Chat Overlay === */
+.chat-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 3; /* above storyteller + fire glow */
+  padding: 60px 12px 150px;
+  box-sizing: border-box;
+}
+
+/* Top Fade Gradient (for older messages only) */
+.chat-fade-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, #08101B 0%, rgba(8,16,27,0.7) 50%, transparent 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* === 📜 Scroll Area === */
+.chat-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  scroll-behavior: smooth;
+  padding-right: 4px;
+
+  /* fade top only — no fade bottom */
+  mask-image: linear-gradient(
+    to top,
+    black 0%,
+    black 70%,
+    rgba(0, 0, 0, 0.8) 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    black 0%,
+    black 70%,
+    rgba(0, 0, 0, 0.8) 90%,
+    transparent 100%
+  );
+}
+
+/* === 💭 Chat Bubbles === */
+.chat-bubble {
+  padding: 14px 18px;
+  border-radius: 18px;
+  max-width: 80%;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  animation: fadeIn 0.25s ease;
+}
+
+.chat-bubble.ai {
+  align-self: flex-start;
+  background: linear-gradient(90deg, #5095FD 0%, #56FFF6 100%);
+  color: #08101B;
+  border: 1px solid rgba(86, 255, 246, 0.4);
+}
+
+.chat-bubble.user {
+  align-self: flex-end;
+  background: rgba(8, 16, 27, 0.9);
+  border: 1px solid #56FFF6;
+  color: #DBDDF5;
+}
+
+/* === ⌨️ Input Field === */
+.input-area {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 82px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #56FFF6;
+  border-radius: 999px;
+  background: rgba(8, 16, 27, 0.85);
+  box-shadow: 0 0 10px #56FFF620;
+  padding: 10px 14px;
+}
+
+.input-area input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #DBDDF5;
+  outline: none;
+  font-size: 1rem;
+}
+
+.input-area button {
+  background: none;
+  border: none;
+  color: #56FFF6;
+  font-size: 1.35rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.input-area button:hover {
+  color: #5095FD;
+}
+
+/* === ⏳ Countdown Timer === */
+.countdown-box {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 28px;
+  background: #08101B;
+  color: #DBDDF5;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(86, 255, 246, 0.5);
+  font-size: 0.9rem;
+  backdrop-filter: blur(3px);
+}
+
+/* === Typing Indicator === */
+.typing-dots {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #56FFF6;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.typing-dots span {
+  animation: flicker 1.2s infinite;
+}
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes flicker {
+  0%,80%,100% { opacity: 0; }
+  40% { opacity: 1; }
+}
+
+/* === Fade-in Animation === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

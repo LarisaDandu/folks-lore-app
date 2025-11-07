@@ -314,6 +314,23 @@ export default function TopBar() {
                   </div>
                 )}
 
+                                <div className="menu-row" onClick={() => setAccountOpen(s => !s)}>
+                  <div className="menu-row-left">
+                    <span className="menu-icon">🔐</span>
+                    <span>Account & security</span>
+                  </div>
+                  <div className="menu-row-right">{accountOpen ? "▴" : "▾"}</div>
+                </div>
+
+                {accountOpen && (
+                  <div className="menu-sublist">
+                    <button className="menu-subitem" onClick={() => navigate("/profile/password")}>Change password</button>
+                    <button className="menu-subitem" onClick={() => navigate("/profile/email")}>Change email</button>
+                    <button className="menu-subitem" onClick={handleLogoutMock}>Log out</button>
+                    <button className="menu-subitem" onClick={() => navigate("/profile/delete")}>Delete account</button>
+                  </div>
+                )}
+
                 <div className="menu-row" onClick={() => navigate("/payments")}>
                   <div className="menu-row-left">
                     <img src={iconCard} className="menu-icon" />
@@ -335,24 +352,7 @@ export default function TopBar() {
                   </div>
                 </div>
 
-                <hr className="menu-divider" />
-
-                <div className="menu-row" onClick={() => setAccountOpen(s => !s)}>
-                  <div className="menu-row-left">
-                    <span className="menu-icon">🔐</span>
-                    <span>Account & security</span>
-                  </div>
-                  <div className="menu-row-right">{accountOpen ? "▴" : "▾"}</div>
-                </div>
-
-                {accountOpen && (
-                  <div className="menu-sublist">
-                    <button className="menu-subitem" onClick={() => navigate("/profile/password")}>Change password</button>
-                    <button className="menu-subitem" onClick={() => navigate("/profile/email")}>Change email</button>
-                    <button className="menu-subitem" onClick={handleLogoutMock}>Log out</button>
-                    <button className="menu-subitem" onClick={() => navigate("/profile/delete")}>Delete account</button>
-                  </div>
-                )}
+                <hr className="menu-divider" /> 
 
                 {/* Customization (same toggles) */}
                 <div className="menu-section-title">Customization</div>
