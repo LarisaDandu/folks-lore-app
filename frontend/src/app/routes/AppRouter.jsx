@@ -24,12 +24,12 @@ import Activity from "../pages/profile/Activity";
 import ReportIssue from "../pages/profile/ReportIssue";
 import Error404 from "../pages/Error404";
 
-function WithLayout({ Component }) {
+function WithLayout({ Component, showTopBar = true, showBottomNav = true }) {
   return (
     <>
-      <TopBar />
+      {showTopBar && <TopBar />}
       <Component />
-      <BottomNav />
+      {showBottomNav && <BottomNav />}
     </>
   );
 }
@@ -39,20 +39,19 @@ export default function AppRouter() {
     <Routes>
       {/* Main app pages (with TopBar + BottomNav) */}
       <Route path={ROUTES.HOME} element={<WithLayout Component={Home} />} />
-      <Route path={ROUTES.MAP} element={<WithLayout Component={Map} />} />
+      <Route path={ROUTES.MAP} element={<WithLayout Component={Map} showTopBar={false} />} />
       <Route path={ROUTES.LIBRARY} element={<WithLayout Component={Library} />} />
       <Route path={ROUTES.YOUR_LIBRARY} element={<WithLayout Component={YourLibrary} />} />
       <Route path={ROUTES.STORY} element={<WithLayout Component={Story} />} />
       <Route
-        path={ROUTES.NOTIFICATIONS}
-        element={<WithLayout Component={Notifications} />}
-      />
+        path={ROUTES.NOTIFICATIONS} element={<WithLayout Component={Notifications} />} />
+      <Route path={ROUTES.PROFILE} element={<WithLayout Component={Profile} showTopBar={false} />} />
+
 
       {/* Pages without TopBar or BottomNav */}
       <Route path={ROUTES.DAILY_CHALLENGE} element={<DailyChallenge />} />
 
       {/* Profile menu routes */}
-      <Route path={ROUTES.PROFILE} element={<Profile />} />
       <Route path="/profile/edit" element={<EditProfile />} />
       <Route path="/profile/delete" element={<DeleteAccount />} />
       <Route path="/profile/password" element={<ChangePassword />} />
