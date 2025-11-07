@@ -1,0 +1,102 @@
+.map-page {
+    position: relative;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    touch-action: none;
+    background: var(--background, #000);
+  }
+  
+  .map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.1s ease-out;
+  }
+  
+  .map-image {
+    width: 180%;
+    height: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+  
+  /* Creature markers */
+  .creature-icon {
+    position: absolute;
+    width: 80px;
+    height: auto;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 5;
+  }
+  
+  /* Hint overlay */
+  .map-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 20px;
+    font-size: 1rem;
+    text-align: center;
+    z-index: 20;
+  }
+  
+  /* Popup card */
+  .popup {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, rgba(10, 10, 20, 0.95), rgba(20, 20, 30, 0.95));
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    color: var(--text, #fff);
+    text-align: center;
+    padding: 20px;
+    z-index: 25;
+  }
+  
+  .popup h2 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    background: var(--gradient-accent);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .popup img {
+    width: 160px;
+    height: auto;
+    margin: 10px auto;
+    display: block;
+  }
+  
+  .read-more-btn {
+    background: var(--gradient-accent);
+    color: var(--background, #000);
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    color: var(--text, #fff);
+    cursor: pointer;
+  }
+  
