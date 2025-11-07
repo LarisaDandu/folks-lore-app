@@ -41,14 +41,14 @@ export default function AppRouter() {
       <Route path={ROUTES.HOME} element={<WithLayout Component={Home} />} />
       <Route path={ROUTES.MAP} element={<WithLayout Component={Map} />} />
       <Route path={ROUTES.LIBRARY} element={<WithLayout Component={Library} />} />
+      <Route path={ROUTES.YOUR_LIBRARY} element={<WithLayout Component={YourLibrary} />} />
+      <Route path={ROUTES.STORY} element={<WithLayout Component={Story} />} />
       <Route
         path={ROUTES.NOTIFICATIONS}
         element={<WithLayout Component={Notifications} />}
       />
 
       {/* Pages without TopBar or BottomNav */}
-      <Route path={ROUTES.YOUR_LIBRARY} element={<YourLibrary />} />
-      <Route path={ROUTES.STORY} element={<Story />} />
       <Route path={ROUTES.DAILY_CHALLENGE} element={<DailyChallenge />} />
 
       {/* Profile menu routes */}
