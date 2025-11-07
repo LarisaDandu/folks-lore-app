@@ -18,14 +18,49 @@ const Chatbot = () => {
   const [timeLeft, setTimeLeft] = useState("");
   const scrollRef = useRef(null);
 
+  // 🧾 Legends list
   const legends = [
-    { name: "Baba Yaga", descriptors: ["Old lady", "White hair", "Witch", "Lives in forest"] },
-    { name: "Wendigo", descriptors: ["Cannibal", "Spirit", "Winter", "Deer skull"] },
-    { name: "Kitsune", descriptors: ["Fox", "Shape-shifter", "Nine tails", "Japan"] },
-    { name: "La Llorona", descriptors: ["Ghost", "Crying", "Children", "River"] },
-    { name: "Anansi", descriptors: ["Spider", "Trickster", "Stories", "Web"] },
+    {
+      name: "Baba Yaga",
+      descriptors: [
+        "Old lady",
+        "White hair",
+        "Tiny pupils",
+        "Slavic mythology",
+        "Witch",
+        "Lives in forest",
+        "House on chicken legs",
+        "Flying broom",
+        "Targets children",
+        "Eastern Europe",
+      ],
+    },
+    {
+      name: "Wendigo",
+      descriptors: ["Cannibal", "Spirit", "Winter", "Deer skull", "Forest", "Cold", "Hunger"],
+    },
+    {
+      name: "Kitsune",
+      descriptors: [
+        "Fox",
+        "Shape-shifter",
+        "Nine tails",
+        "Japan",
+        "Trickster",
+        "Beautiful woman",
+      ],
+    },
+    {
+      name: "La Llorona",
+      descriptors: ["Ghost", "Crying", "Children", "River", "Water", "Weeping", "Latin America"],
+    },
+    {
+      name: "Anansi",
+      descriptors: ["Spider", "Trickster", "Stories", "Web", "Africa", "Deceiver", "Clever"],
+    },
   ];
 
+  // 🎴 Pick legend of the day
   useEffect(() => {
     const dkDate = new Date(
       new Date().toLocaleString("en-US", { timeZone: "Europe/Copenhagen" })
@@ -34,6 +69,7 @@ const Chatbot = () => {
     setDailyLegend(legends[dayOfYear % legends.length]);
   }, []);
 
+  // 🕰 Countdown
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
@@ -51,6 +87,7 @@ const Chatbot = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // 💬 Auto-scroll to latest message
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
@@ -58,6 +95,7 @@ const Chatbot = () => {
     });
   }, [messages]);
 
+  // 🎭 Simulated typing animation
   const simulateTyping = (fullText, speedMs = 45) => {
     return new Promise((resolve) => {
       let i = 0;
@@ -75,35 +113,69 @@ const Chatbot = () => {
     });
   };
 
+  // 🌒 Handle message send (Agent version)
   const handleSend = async () => {
     if (!input.trim() || loading) return;
+
+    const userAttempts = messages.filter((m) => m.role === "user").length;
+    if (userAttempts >= 11) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            "You have used all 10 attempts. The fire fades... come back tomorrow.",
+        },
+      ]);
+      return;
+    }
+
     const userMsg = { role: "user", content: input };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: `You are "Storyteller", legend: ${dailyLegend?.name}` },
-            ...messages,
-            userMsg,
-          ],
-        }),
-      });
+      const response = await fetch(
+        `https://api.mistral.ai/v1/agents/${import.meta.env.VITE_MISTRAL_AGENT_ID}/completions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.MISTRAL_API_KEY}`,
+          },
+          body: JSON.stringify({
+            input: [
+              {
+                role: "system",
+                content: `Today's legend: ${dailyLegend?.name}. Respond as the Storyteller — dark, mysterious, and always speaking in riddles.`,
+              },
+              ...messages,
+              userMsg,
+            ],
+          }),
+        }
+      );
 
       const data = await response.json();
-      const aiReply = data.choices?.[0]?.message?.content || "(The fire crackles softly...)";
+      console.log("🧙 Mistral reply:", data);
+
+      // ✅ Correct parsing for Mistral Agent responses
+      const aiReply =
+        data.output?.[0]?.content?.[0]?.text ||
+        data.output?.[0]?.message?.content ||
+        "(The fire crackles softly...)";
 
       setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
       await simulateTyping(aiReply, 45);
-    } catch {
+    } catch (error) {
+      console.error("🔥 Error contacting Mistral:", error);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "The fire fades... try again later." },
+        {
+          role: "assistant",
+          content: "The fire fades... something went wrong contacting the spirits.",
+        },
       ]);
     } finally {
       setLoading(false);
