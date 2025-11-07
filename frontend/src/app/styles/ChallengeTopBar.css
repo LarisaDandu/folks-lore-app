@@ -1,0 +1,235 @@
+.challenge-topbar-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 18px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  font-weight: 700;
+  font-size: clamp(16px, 2vw, 18px);
+}
+
+.challenge-topbar-arrow {
+  font-size: clamp(32px, 4vw, 42px); /* larger + responsive */
+  color: #5095fd;
+  cursor: pointer;
+  margin-bottom: 10px;
+  line-height: 1;
+  transition: 0.3s ease;
+  user-select: none;
+}
+.challenge-topbar-arrow:hover {
+  transform: translateX(-4px) scale(1.05);
+}
+
+.arrow-icon {
+  width: clamp(40px, 6vw, 52px);
+  height: clamp(40px, 6vw, 52px);
+  stroke: #5095fd;
+  stroke-width: 3.8;
+  transition: all 0.25s ease;
+}
+
+.arrow-icon:hover {
+  transform: translateX(-4px) scale(1.08);
+  stroke: #56fff6;
+  filter: drop-shadow(0 0 6px rgba(86, 255, 246, 0.5));
+}
+
+
+/* 💰 Currency + Info Row */
+.challenge-topbar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.currency-section {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.currency-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.currency-amount {
+  font-size: clamp(28px, 4vw, 40px);
+  color: #56fff6;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(86, 255, 246, 0.4);
+}
+
+.info-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.info-icon:hover {
+  transform: scale(1.1);
+}
+
+/* === ℹ️ Overlay Background === */
+.info-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 16, 27, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Above everything */
+  animation: overlayFadeIn 0.3s ease;
+}
+
+/* === 📜 Info Popup === */
+.info-popup {
+  background: #08101b;
+  border: 1px solid rgba(86, 255, 246, 0.4);
+  border-radius: 14px;
+  padding: 30px 22px;
+  width: 80%;
+  max-width: 420px;
+  text-align: center;
+  color: #dbddf5;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.5;
+  font-size: 1rem;
+  font-weight: 600;
+  background-image: linear-gradient(to bottom right, #08101b, #0c1b2d);
+
+  /* Soft glow outline effect */
+  box-shadow:
+    0 0 25px rgba(80, 149, 253, 0.25),
+    0 0 15px rgba(86, 255, 246, 0.15);
+  animation: popupSlideIn 0.4s ease;
+}
+
+/* Headline */
+.info-popup h2 {
+  color: #ffffff;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+/* Paragraphs */
+.info-popup p {
+  font-size: 1rem;
+  color: #b8baf2;
+  margin: 8px 0;
+  font-weight: 500;
+}
+
+/* === ✨ Animations === */
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popupSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* === 🪄 Overlay Popup === */
+.info-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 16, 27, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.info-popup {
+  background: #08101b;
+  border-radius: 16px;
+  border: 1.5px solid transparent;
+  background-image: linear-gradient(#08101b, #08101b),
+    linear-gradient(90deg, #5095fd, #56fff6);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  color: #dbddf5;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  padding: 15vh 4vw 20vh; /* 15% top, 20% bottom as requested */
+  width: 90%;
+  max-width: 500px;
+  box-sizing: border-box;
+  box-shadow: 0 0 20px rgba(86, 255, 246, 0.25);
+  animation: fadeInPopup 0.3s ease;
+  cursor: pointer;
+}
+
+/* === Popup Text === */
+.info-popup h2 {
+  font-size: clamp(20px, 2.4vw, 28px);
+  color: #dbddf5;
+  margin-bottom: 16px;
+}
+
+.info-popup p {
+  font-size: clamp(14px, 1.8vw, 18px);
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+/* === Popup Image === */
+.popup-image {
+  width: 140px;
+  height: auto;
+  margin: 24px auto 12px;
+  display: block;
+}
+
+/* === Pagination Dots === */
+.popup-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(86, 255, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background-color: #56fff6;
+  box-shadow: 0 0 6px rgba(86, 255, 246, 0.8);
+}
+
+/* === Animation === */
+@keyframes fadeInPopup {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
