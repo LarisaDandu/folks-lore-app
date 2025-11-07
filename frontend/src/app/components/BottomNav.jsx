@@ -9,6 +9,12 @@ export default function BottomNav(){
       <Link to={ROUTES.MAP}>Map</Link>
       <Link to={ROUTES.LIBRARY}>Library</Link>
       <Link to={ROUTES.NOTIFICATIONS}>Notifications</Link>
+            <Link
+        to={ROUTES.DAILY_CHALLENGE}
+        className={location.pathname === ROUTES.DAILY_CHALLENGE ? "active" : ""}
+      >
+        Daily Challenge
+      </Link>
     </nav>
   );
 }
