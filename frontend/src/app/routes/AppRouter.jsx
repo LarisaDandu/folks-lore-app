@@ -42,7 +42,7 @@ export default function AppRouter() {
       <Route path={ROUTES.MAP} element={<WithLayout Component={Map} showTopBar={false} />} />
       <Route path={ROUTES.LIBRARY} element={<WithLayout Component={Library} />} />
       <Route path={ROUTES.YOUR_LIBRARY} element={<WithLayout Component={YourLibrary} />} />
-      <Route path={ROUTES.STORY} element={<WithLayout Component={Story} />} />
+      <Route path={`${ROUTES.STORY}/:id`} element={<WithLayout Component={Story} />} />
       <Route
         path={ROUTES.NOTIFICATIONS} element={<WithLayout Component={Notifications} />} />
       <Route path={ROUTES.PROFILE} element={<WithLayout Component={Profile} showTopBar={false} />} />
