@@ -1,5 +1,5 @@
 import "../styles/BottomNav.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -11,6 +11,11 @@ import notificationIcon from "../assets/icons/notification.svg";
 export default function BottomNav() {
   const location = useLocation();
   const [active, setActive] = useState(location.pathname);
+
+  // 🔄 Update active tab whenever route changes
+  useEffect(() => {
+    setActive(location.pathname);
+  }, [location.pathname]);
 
   const navItems = [
     { path: "/", icon: homeIcon, name: "Home" },
@@ -24,12 +29,12 @@ export default function BottomNav() {
       <div className="nav-inner">
         {navItems.map((item) => {
           const isActive = active === item.path;
+
           return (
             <Link
               key={item.path}
               to={item.path}
               className={`nav-item ${isActive ? "active" : ""}`}
-              onClick={() => setActive(item.path)}
             >
               {isActive ? (
                 <motion.div
@@ -37,13 +42,12 @@ export default function BottomNav() {
                   className="active-bubble"
                   transition={{
                     type: "spring",
-                    stiffness: 280, // smoother, less bouncy
+                    stiffness: 280,
                     damping: 32,
                     mass: 0.6,
                   }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  {/* Instantly switch icon — no grow animation */}
                   <img src={item.icon} alt={item.name} className="nav-icon" />
                 </motion.div>
               ) : (
