@@ -49,6 +49,7 @@ export default function AppRouter() {
       {/* Pages without TopBar or BottomNav */}
       <Route path={ROUTES.YOUR_LIBRARY} element={<YourLibrary />} />
       <Route path={ROUTES.STORY} element={<Story />} />
+      <Route path={`${ROUTES.STORY}/:id`} element={<Story />} />
       <Route path={ROUTES.DAILY_CHALLENGE} element={<DailyChallenge />} />
 
       {/* Profile menu routes */}
