@@ -108,7 +108,48 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  .username-input {
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: left;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--text);
+    font-family: var(--font-main, 'Lato', sans-serif);
+    background: var(--gradient-accent);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 5px 0;
+    width: 240px;
+  }
+  .username-edit-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
   
+  .username-confirm-btn {
+    background: var(--gradient-accent);
+    color: var(--background);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    margin-right: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .username-confirm-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }  
+
   .user-handle {
     font-size: 0.9rem;
     color: #8b949e;

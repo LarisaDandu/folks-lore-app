@@ -15,7 +15,7 @@ export default function Profile() {
     () => localStorage.getItem("profile.avatarSrc") || Kitty
   );
   const [username, setUsername] = useState(
-    () => localStorage.getItem("profile.username") || "_Al3x_"
+    () => localStorage.getItem("profile.username") || "Explorer"
   );
   const [isEditingName, setIsEditingName] = useState(false);
 
@@ -116,7 +116,7 @@ export default function Profile() {
       />
 
       <div className="hero-section">
-        {/* background image (default Tails, user can replace) */}
+        {/* default background image */}
         <img src={coverSrc} alt="background" className="hero-bg" />
 
         {/* edit pencil in top-right of hero */}
@@ -150,28 +150,41 @@ export default function Profile() {
       <div className="profile-info">
         <div className="username-row">
           {isEditingName ? (
-            <input
-              autoFocus
-              defaultValue={username}
-              className="username-input"
-              onBlur={(e) => commitName(e.target.value)}
-              onKeyDown={onNameKeyDown}
-              aria-label="Edit username"
-            />
-          ) : (
-            <>
-              <h1 className="username">{username}</h1>
-              <button
-                className="username-edit-btn"
-                onClick={startEditName}
-                aria-label="Edit username"
-                title="Edit username"
-              >
-                <img src={editButton} alt="" />
-              </button>
-            </>
-          )}
-        </div>
+          <div className="username-edit-container">
+          <input
+            autoFocus
+            defaultValue={username}
+            className="username-input"
+            onChange={(e) => setUsername(e.target.value.slice(0, 15))}
+            onKeyDown={onNameKeyDown}
+            aria-label="Edit username"
+            maxLength={12}
+          />
+          <button
+            className="username-confirm-btn"
+            onClick={() => {
+            localStorage.setItem("profile.username", username);
+            setIsEditingName(false);
+            document.activeElement.blur();
+            }}>
+            Confirm
+          </button>
+    </div>
+  ) : (
+    <>
+      <h1 className="username">{username}</h1>
+      <button
+        className="username-edit-btn"
+        onClick={startEditName}
+        aria-label="Edit username"
+        title="Edit username"
+      >
+        <img src={editButton} alt="" />
+      </button>
+    </>
+  )}
+</div>
+
 
         <p className="user-handle">Joined 20.10.2025</p>
 
