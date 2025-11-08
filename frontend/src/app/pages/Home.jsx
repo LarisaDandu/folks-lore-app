@@ -4,6 +4,7 @@ import storytellerImg from "../assets/images/storytelerr.png"; // your image fil
 import bgShape from "../assets/images/bg-shape.png";
 import mapCard from "../assets/images/map-card.png";
 import { useNavigate } from "react-router-dom";
+import StoryCard from "../components/StoryCard"
 
 export default function Home() {
 
@@ -11,6 +12,7 @@ export default function Home() {
 
   return (
     <>
+    <StoryCard id={1} />
     <div
       className="home-card"
       style={{
