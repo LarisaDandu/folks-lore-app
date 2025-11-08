@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useRef, useState, useEffect } from "react";
-import "../styles/map.css";
+import "../styles/Map.css";
 import { useNavigate } from "react-router-dom";
 
 import mapImage from "../assets/images/map.png";
