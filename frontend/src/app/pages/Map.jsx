@@ -24,13 +24,13 @@ const creatures = [
     },
     {
       id: 3,
-      name: "Japanese Folklore",
+      name: "Asian Folklore",
       image: asiaFolklore,
       position: { top: "34%", left: "70%" },
     },
     {
       id: 4,
-      name: "South American Folklore",
+      name: "American Folklore",
       image: americaFolklore,
       position: { top: "28%", left: "20%" },
     },

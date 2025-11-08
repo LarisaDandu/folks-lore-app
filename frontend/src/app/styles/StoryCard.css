@@ -1,0 +1,55 @@
+@import url("app.css");
+
+.folklore-card {
+  position: relative;
+  width: 83vw;
+  height: 25vh;
+  border-radius: 20px;
+  overflow: hidden;
+  color: var(--background);
+  padding: 20px;
+}
+
+/* two stacked bg layers; we just fade the top one */
+.bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: opacity .35s ease;
+}
+.bg--one { opacity: 1; }
+.bg--two { opacity: 0; }
+.folklore-card.is-expanded .bg--two { opacity: 1; }
+.folklore-card.is-expanded .bg--one { opacity: 0; }
+
+/* corner menu */
+.menu-area {
+  position: absolute; top: 0.3vh; right: 0.2vw;
+  display: flex; gap: 8px; z-index: 2;
+}
+.menu-btn {
+  background: none;
+  border: none;
+  padding: 6px; cursor: pointer; transition: transform .2s,
+}
+.menu-btn img { width: 30px; height: 30px; }
+
+.icon-btn1, .icon-btn2 {
+  background: none;
+  border: none;
+  padding: 6px; cursor: pointer; transition: transform .2s;
+  margin-left: 3vw;
+}
+
+.icon-btn1 img, .icon-btn2 img { width: 40px; height: 50px; }
+
+/* text + character */
+.text-content { position: absolute; left: 4vw; top: 2vh; width: 60%; z-index: 2; }
+.text-content h2 { margin: 0 0 8px; font-family: "Cinzel", serif; font-size: 2rem; font-family: Kastroz;}
+.text-content p { margin-top: 3vh; font-size: 1.1rem; line-height: 1.2; font-weight: 500; }
+
+.character {
+  position: absolute; right: -28vw; bottom: -18vh; height: 35vh;
+  object-fit: contain; z-index: 2; pointer-events: none;
+}

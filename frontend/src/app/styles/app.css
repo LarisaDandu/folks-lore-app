@@ -10,6 +10,14 @@
 --fire-gradient-1: #FF6E20;
 --fire-gradient-2: #5095FD;
 --font-main: 'Lato', sans-serif;
+
+}
+
+@font-face {
+  font-family: "Kastroz";
+  src: local("GilroyRegular"),
+    url("../assets/fonts/Kastroz-0v5G9.otf") format("opentype");
+  font-weight: normal;
 }
 
 body.light-mode {
