@@ -8,6 +8,7 @@ import europeFolklore from "../assets/images/Europefolklore.png";
 import africaFolklore from "../assets/images/AfricaFolklore.png";
 import asiaFolklore from "../assets/images/AsiaFolklore.png";
 import americaFolklore from "../assets/images/AmericaFolklore.png";
+import closeIcon from "../assets/icons/x.svg";
 
 const creatures = [
     {
@@ -138,18 +139,24 @@ export default function Map() {
            ))}
 
         </div>
-  
+        {/* popups*/}
         {popupVisible && (
-            <div className="popup">
-                <button className="close-btn" onClick={() => setPopupVisible(false)}>
-                ✕
-                </button>
-                <h2>{popupVisible.name}</h2>
-                <img src={popupVisible.image} alt={popupVisible.name} />
-                <p>{popupVisible.description}</p>
-                <button className="read-more-btn">Read More</button>
+            <div className="popup-layer">
+                <div className="popup-outer">
+                    <div className="popup-card">
+                    <button className="close-btn" onClick={() => setPopupVisible(false)}>
+                        <img src={closeIcon} alt="Close" className="close-icon" />
+                    </button>
+                        <h2 className="popup-title">{popupVisible.name}</h2>
+                        <img src={popupVisible.image} alt={popupVisible.name} className="popup-creature" />
+                    </div>
+                </div>
+                <div className="read-more-wrap">
+                    <button className="read-more-btn">Read More</button>
+                </div>
+
             </div>
         )}
-      </div>
+     </div>
     );
-  }
+}
