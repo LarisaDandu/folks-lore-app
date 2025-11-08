@@ -2,12 +2,15 @@ import React from "react";
 
 import { useRef, useState, useEffect } from "react";
 import "../styles/map.css";
+import { useNavigate } from "react-router-dom";
 
 import mapImage from "../assets/images/map.png";
 import europeFolklore from "../assets/images/Europefolklore.png";
 import africaFolklore from "../assets/images/AfricaFolklore.png";
 import asiaFolklore from "../assets/images/AsiaFolklore.png";
 import americaFolklore from "../assets/images/AmericaFolklore.png";
+import closeIcon from "../assets/icons/x.svg";
+import backIcon from "../assets/icons/backarrow.svg";
 
 const creatures = [
     {
@@ -42,6 +45,7 @@ export default function Map() {
     const [start, setStart] = useState({ x: 0, y: 0 });
     const [showHint, setShowHint] = useState(true);
     const [popupVisible, setPopupVisible] = useState(false);
+    const navigate = useNavigate();
   
     const SCALE_X = 4; 
     const SCALE_Y = 4 / 2.13;
@@ -106,6 +110,12 @@ export default function Map() {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
+
+        {/* Back Button */}
+        <button className="back-btn" onClick={() => navigate("/")}>
+            <img src={backIcon} alt="Back" className="back-icon" />
+        </button>
+
         {/* Hint overlay */}
         {showHint && (
           <div className="map-hint">
@@ -138,18 +148,24 @@ export default function Map() {
            ))}
 
         </div>
-  
+        {/* popups*/}
         {popupVisible && (
-            <div className="popup">
-                <button className="close-btn" onClick={() => setPopupVisible(false)}>
-                ✕
-                </button>
-                <h2>{popupVisible.name}</h2>
-                <img src={popupVisible.image} alt={popupVisible.name} />
-                <p>{popupVisible.description}</p>
-                <button className="read-more-btn">Read More</button>
+            <div className="popup-layer">
+                <div className="popup-outer">
+                    <div className="popup-card">
+                    <button className="close-btn" onClick={() => setPopupVisible(false)}>
+                        <img src={closeIcon} alt="Close" className="close-icon" />
+                    </button>
+                        <h2 className="popup-title">{popupVisible.name}</h2>
+                        <img src={popupVisible.image} alt={popupVisible.name} className="popup-creature" />
+                    </div>
+                </div>
+                <div className="read-more-wrap">
+                    <button className="read-more-btn">Read More</button>
+                </div>
+
             </div>
         )}
-      </div>
+     </div>
     );
-  }
+}
