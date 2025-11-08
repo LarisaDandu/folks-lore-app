@@ -52,6 +52,6 @@
 .text-content p { margin-top: 3vh; font-size: 1.1rem; line-height: 1.2; font-weight: 500; }
 
 .character {
-  position: absolute; right: -28vw; bottom: -18vh; height: 35vh;
+  position: absolute; right: -36vw; bottom: -15vh; height: 35vh;
   object-fit: contain; z-index: 2; pointer-events: none;
 }
