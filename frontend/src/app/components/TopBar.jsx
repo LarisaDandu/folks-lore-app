@@ -117,7 +117,7 @@ export default function TopBar() {
 
   return (
     <>
-      <header className="folk-topbar" style={{ background: "var(--background)" }}>
+      <header className="folk-topbar" >
         <div className="folk-topbar-inner">
           {/* left user icon (slightly larger) */}
           <div

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase/supabaseClient.js";
 import "../styles/StoryCard.css";
+import { useNavigate } from "react-router-dom";
 
 import bgOne from "../assets/images/bgOne.png";        // single bubble
 import bgTwo from "../assets/images/bgTwo.png";
@@ -10,15 +11,18 @@ import menuIcon from "../assets/icons/dotsdots.svg";
 import saveIcon from "../assets/icons/save.svg";
 import readIcon from "../assets/icons/read.svg";
 
+
+
 export default function FolkloreCard({ id }) {
   const [data, setData] = useState(null);
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
     (async () => {
       const { data, error } = await supabase
-        .from("Folklore Stories")                // ← your table
+        .from("Folklore Stories")
         .select("name, short_description, picture")
         .eq("id", Number(id))
         .maybeSingle();
@@ -33,24 +37,47 @@ export default function FolkloreCard({ id }) {
 
   if (!data) return null;
 
+  // Navigate to specific story page
+  const goToStory = () => navigate(`/story/${id}`);
+
   return (
-    <div className={`folklore-card ${expanded ? "is-expanded" : ""}`}>
-      {/* background layers for smooth fade */}
+    <div
+      className={`folklore-card ${expanded ? "is-expanded" : ""}`}
+      onClick={goToStory}
+    >
+      {/* background layers */}
       <div className="bg bg--one" style={{ backgroundImage: `url(${bgOne})` }} />
       <div className="bg bg--two" style={{ backgroundImage: `url(${bgTwo})` }} />
 
       {/* corner menu */}
-      <div className="menu-area">
+      <div
+        className="menu-area"
+        onClick={(e) => e.stopPropagation()} // stop click bubbling to card
+      >
         {!expanded ? (
-          <button className="menu-btn" onClick={() => setExpanded(true)} aria-label="open menu">
+          <button
+            className="menu-btn"
+            onClick={() => setExpanded(true)}
+            aria-label="open menu"
+          >
             <img src={menuIcon} alt="" />
           </button>
         ) : (
           <div className="menu-expanded">
-            <button className="icon-btn1" onClick={() => setExpanded(false)} aria-label="save">
+            <button
+              className="icon-btn1"
+              onClick={() => setExpanded(false)}
+              aria-label="save"
+            >
               <img src={saveIcon} alt="" />
             </button>
-            <button className="icon-btn2" aria-label="read">
+
+            {/* Read button — opens story */}
+            <button
+              className="icon-btn2"
+              onClick={() => navigate(`/story/${id}`)}
+              aria-label="read"
+            >
               <img src={readIcon} alt="" />
             </button>
           </div>
@@ -62,7 +89,9 @@ export default function FolkloreCard({ id }) {
         <p>{data.short_description}</p>
       </div>
 
-      {data.picture && <img className="character" src={data.picture} alt={data.name} />}
+      {data.picture && (
+        <img className="character" src={data.picture} alt={data.name} />
+      )}
     </div>
   );
 }

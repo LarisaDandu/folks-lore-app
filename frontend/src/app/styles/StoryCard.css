@@ -2,9 +2,9 @@
 
 .folklore-card {
   position: relative;
-  width: 83vw;
-  height: 25vh;
-  border-radius: 20px;
+  width: 85vw;                /* ~85% of screen width, scales nicely */
+  max-width: 360px;           /* never larger than a small tablet */
+  aspect-ratio: 17.2 / 11.5;  
   overflow: hidden;
   color: var(--background);
   padding: 20px;
@@ -25,13 +25,15 @@
 
 /* corner menu */
 .menu-area {
-  position: absolute; top: 0.3vh; right: 0.2vw;
+  position: absolute; top: 0; right: 1vw;
   display: flex; gap: 8px; z-index: 2;
 }
 .menu-btn {
   background: none;
   border: none;
-  padding: 6px; cursor: pointer; transition: transform .2s,
+  padding: 1.4vh 1.6vw;
+  cursor: pointer; 
+  transition: transform .2s,
 }
 .menu-btn img { width: 30px; height: 30px; }
 
@@ -39,7 +41,7 @@
   background: none;
   border: none;
   padding: 6px; cursor: pointer; transition: transform .2s;
-  margin-left: 3vw;
+  margin: 0 -1.1vw 0 4.5vw;
 }
 
 .icon-btn1 img, .icon-btn2 img { width: 40px; height: 50px; }

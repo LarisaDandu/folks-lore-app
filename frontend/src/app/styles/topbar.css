@@ -5,14 +5,22 @@
   --accent-2: #5aa6ff;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 /* Topbar container & clip-path */
 .folk-topbar {
   width: 100%;
-  background: url('../assets/wave-shape.svg') no-repeat center top;
-  background-size: cover; /* or '100% 100%' if it should stretch */
-  padding: 68px 20px 20px 20px;
+  height: 180px; /* or try 200px */
+  background: url("../assets/images/topbarShape.png") no-repeat;
+  background-position: center -20px;
+  background-size: cover;
+  background-origin: border-box;
+  padding: 50px 20px 20px 20px;
   box-sizing: border-box;
-  position: relative;
+  position: fixed;
   z-index: 60;
 }
 
@@ -101,8 +109,8 @@
 .folk-search-send { background: transparent; border: none; cursor: pointer; }
 .folk-search-send img { width: 30px; height: 30px}
 
-/* =========== MENU =========== */
-/* overlay (dim but menu does not cover full screen) */
+/*-------------MENU----------- */
+/* overlay */
 .folk-menu-overlay {
   position: fixed;
   inset: 0;
@@ -110,17 +118,17 @@
   pointer-events: none;
 }
 
-/* panel (slides from LEFT — CHANGED) */
+/* panel  */
 .folk-menu-overlay .folk-menu-panel {
   position: absolute;
   top: 0;
-  left: 0; /* 👈 instead of right: 0 */
+  left: 0;
   height: 100vh;
   background: var(--background);
-  box-shadow: 10px 20px 60px rgba(0,0,0,0.6); /* flipped shadow direction */
+  box-shadow: 10px 20px 60px rgba(0,0,0,0.6); 
   padding: 22px;
   box-sizing: border-box;
-  transform: translateX(-110%); /*  slide out to the left */
+  transform: translateX(-110%);
   transition: transform 300ms cubic-bezier(.2,.9,.3,1);
   pointer-events: auto;
   overflow-y: auto;
