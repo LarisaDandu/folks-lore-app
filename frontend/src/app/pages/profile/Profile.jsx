@@ -1,18 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "../../styles/Profile.css";
+import { useNavigate } from "react-router-dom";
 
 import backIcon from "../../assets/icons/backarrow.svg";
 import editButton from "../../assets/icons/edit.svg";
-import Tails from "../../assets/images/Tails.png";
-import Kitty from "../../assets/images/Kitty.jpeg";
+import Forest from "../../assets/images/Forestback.png";
+import Explorer from "../../assets/images/Explorer.png";
 
 export default function Profile() {
-  // --- defaults + localStorage restore ---
+  const navigate = useNavigate();
+
   const [coverSrc, setCoverSrc] = useState(
-    () => localStorage.getItem("profile.coverSrc") || Tails
+    () => localStorage.getItem("profile.coverSrc") || Forest
   );
   const [avatarSrc, setAvatarSrc] = useState(
-    () => localStorage.getItem("profile.avatarSrc") || Kitty
+    () => localStorage.getItem("profile.avatarSrc") || Explorer
   );
   const [username, setUsername] = useState(
     () => localStorage.getItem("profile.username") || "Explorer"
@@ -36,13 +38,37 @@ export default function Profile() {
   ]);
   const [selected, setSelected] = useState([]);
 
+  // New dropdown menu state
+  const [showCoverMenu, setShowCoverMenu] = useState(false);
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false);
+
+  // close menus when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const clickedInsideCoverMenu = e.target.closest(".edit-menu.cover-menu");
+      const clickedInsideAvatarMenu = e.target.closest(".edit-menu.avatar-menu");
+      const clickedEditButton = e.target.closest(".hero-edit-btn, .avatar-wrapper");
+  
+      // If click is not inside any active area → close both
+      if (!clickedInsideCoverMenu && !clickedInsideAvatarMenu && !clickedEditButton) {
+        setShowCoverMenu(false);
+        setShowAvatarMenu(false);
+      }
+    };
+  
+    window.addEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
+  }, []);
+
   // hidden inputs to open phone gallery
   const coverInputRef = useRef(null);
   const avatarInputRef = useRef(null);
 
   const toggleInterest = (interest) => {
     setSelected((prev) =>
-      prev.includes(interest) ? prev.filter((i) => i !== interest) : [...prev, interest]
+      prev.includes(interest)
+        ? prev.filter((i) => i !== interest)
+        : [...prev, interest]
     );
   };
 
@@ -62,7 +88,6 @@ export default function Profile() {
       alert("Please choose an image file.");
       return;
     }
-    // (optional) basic size guard so localStorage doesn't overflow too fast
     if (file.size > 2.5 * 1024 * 1024) {
       alert("That image is a bit large. Try one under ~2.5MB.");
       return;
@@ -72,11 +97,31 @@ export default function Profile() {
     if (kind === "cover") {
       setCoverSrc(dataUrl);
       localStorage.setItem("profile.coverSrc", dataUrl);
+      setShowCoverMenu(false);
     } else {
       setAvatarSrc(dataUrl);
       localStorage.setItem("profile.avatarSrc", dataUrl);
+      setShowAvatarMenu(false);
     }
-    e.target.value = ""; // allow re-selecting the same file later
+    e.target.value = "";
+  };
+
+  // Reset handlers
+  const resetCover = () => {
+    setCoverSrc(Forest);
+    localStorage.removeItem("profile.coverSrc");
+    setTimeout(() => {
+      setShowCoverMenu(false);
+      setShowAvatarMenu(false);
+    }, 0);
+  };
+  const resetAvatar = () => {
+    setAvatarSrc(Explorer);
+    localStorage.removeItem("profile.avatarSrc");
+    setTimeout(() => {
+      setShowAvatarMenu(false);
+      setShowCoverMenu(false);
+    }, 0);
   };
 
   const startEditName = () => setIsEditingName(true);
@@ -102,7 +147,6 @@ export default function Profile() {
         ref={coverInputRef}
         type="file"
         accept="image/*"
-        capture="environment"
         hidden
         onChange={(e) => handlePick(e, "cover")}
       />
@@ -110,81 +154,104 @@ export default function Profile() {
         ref={avatarInputRef}
         type="file"
         accept="image/*"
-        capture="user"
         hidden
         onChange={(e) => handlePick(e, "avatar")}
       />
 
       <div className="hero-section">
-        {/* default background image */}
         <img src={coverSrc} alt="background" className="hero-bg" />
 
-        {/* edit pencil in top-right of hero */}
-        <button
-          className="hero-edit-btn"
-          onClick={() => coverInputRef.current?.click()}
-          aria-label="Change background image"
-          title="Change background image"
-        >
-          <img src={editButton} alt="" />
-        </button>
-
         {/* Back button */}
-        <button className="back-btn">
+        <button className="back-btn" onClick={() => navigate("/")}>
           <img src={backIcon} alt="Back" className="icon" />
         </button>
 
-        {/* Avatar (whole circle tappable to change) */}
+        {/* Edit background image */}
         <div
-          className="avatar-wrapper"
-          onClick={() => avatarInputRef.current?.click()}
-          role="button"
-          aria-label="Change avatar"
-          tabIndex={0}
-          onKeyDown={(e) => (e.key === "Enter" ? avatarInputRef.current?.click() : null)}
+          className="edit-wrapper"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowAvatarMenu(false);
+            setShowCoverMenu((p) => !p);
+          }}
         >
-          <img src={avatarSrc} alt="avatar" className="avatar-img" />
+          <button className="hero-edit-btn">
+            <img src={editButton} alt="edit" />
+          </button>
+
+          {showCoverMenu && (
+            <div className="edit-menu">
+              <button onClick={() => coverInputRef.current?.click()}>
+                Choose New Image
+              </button>
+              <button onClick={resetCover}>Reset to Default</button>
+            </div>
+          )}
+        </div>
+
+        {/* Avatar + edit */}
+        <div className="avatar-section">
+          <div
+            className="avatar-wrapper"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowCoverMenu(false);
+              setShowAvatarMenu((p) => !p);
+            }}
+          >
+            <img src={avatarSrc} alt="avatar" className="avatar-img" />
+          </div>
+
+          {showAvatarMenu && (
+            <div className="edit-menu avatar-menu">
+              <button onClick={() => avatarInputRef.current?.click()}>
+                Choose New Avatar
+              </button>
+              <button onClick={resetAvatar}>Reset to Default</button>
+            </div>
+          )}
         </div>
       </div>
 
+      {/* Profile Info */}
       <div className="profile-info">
         <div className="username-row">
           {isEditingName ? (
-          <div className="username-edit-container">
-          <input
-            autoFocus
-            defaultValue={username}
-            className="username-input"
-            onChange={(e) => setUsername(e.target.value.slice(0, 15))}
-            onKeyDown={onNameKeyDown}
-            aria-label="Edit username"
-            maxLength={12}
-          />
-          <button
-            className="username-confirm-btn"
-            onClick={() => {
-            localStorage.setItem("profile.username", username);
-            setIsEditingName(false);
-            document.activeElement.blur();
-            }}>
-            Confirm
-          </button>
-    </div>
-  ) : (
-    <>
-      <h1 className="username">{username}</h1>
-      <button
-        className="username-edit-btn"
-        onClick={startEditName}
-        aria-label="Edit username"
-        title="Edit username"
-      >
-        <img src={editButton} alt="" />
-      </button>
-    </>
-  )}
-</div>
-
+            <div className="username-edit-container">
+              <input
+                autoFocus
+                defaultValue={username}
+                className="username-input"
+                onChange={(e) => setUsername(e.target.value.slice(0, 15))}
+                onKeyDown={onNameKeyDown}
+                aria-label="Edit username"
+                maxLength={12}
+              />
+              <button
+                className="username-confirm-btn"
+                onClick={() => {
+                  localStorage.setItem("profile.username", username);
+                  setIsEditingName(false);
+                  document.activeElement.blur();
+                }}
+              >
+                Confirm
+              </button>
+            </div>
+          ) : (
+            <>
+              <h1 className="username">{username}</h1>
+              <button
+                className="username-edit-btn"
+                onClick={startEditName}
+                aria-label="Edit username"
+                title="Edit username"
+              >
+                <img src={editButton} alt="" />
+              </button>
+            </>
+          )}
+        </div>
 
         <p className="user-handle">Joined 20.10.2025</p>
 
@@ -206,9 +273,10 @@ export default function Profile() {
             <button
               key={index}
               onClick={() => toggleInterest(interest)}
-              className={`interest-btn ${selected.includes(interest) ? "selected" : ""}`}
+              className={`interest-btn ${
+                selected.includes(interest) ? "selected" : ""
+              }`}
             >
-              
               {interest}
             </button>
           ))}
