@@ -45,5 +45,154 @@ body.low-sat-light {
   --fire-gradient-2: #7E9DCC;
 }
 
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
 body { margin:0; font-family: Lato, system-ui, sans-serif; background:var(--text); color:var(--text);}
 .page { padding: 1rem; }
+
+/*--------------HOME PAGE ELEMENTS----------------------*/
+
+.home-card {
+  flex: none;
+  width: 90vw;
+  height: 33vh;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dark blue section */
+.home-content {
+  position: absolute;
+  top: 1vh;
+  left: 2.5vw;
+  width: 94%;
+  height: 70%;
+  background: var(--background);
+  border-radius: 20px;
+  padding: 20px;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: height 0.3s ease;
+}
+
+/* Text area */
+.home-text {
+  flex: 1;
+  max-width: 60%;
+  z-index: 1;
+}
+
+.home-text h2 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 15% 0;
+}
+
+.home-progress {
+  color: var(--accent-2);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Storyteller image */
+.home-image {
+  position: absolute;
+  right: 0.5vw;
+  top: 4vh;
+  width: 35vw;
+  height: auto;
+  object-fit: contain;
+}
+
+/* buttons */
+.home-play-btn {
+  position: absolute;
+  bottom: 1vh;
+  right: 5vw;
+  background: var(--background);
+  color: var(--text);
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 99px;
+  padding: 13px 70px;
+  cursor: pointer;
+}
+
+.home-discover-btn {
+  position: absolute;
+  bottom: 1vh;
+  right: 5vw;
+  background: var(--background);
+  color: var(--text);
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 99px;
+  padding: 13px 52px;
+  cursor: pointer;
+}
+
+
+
+@media (max-width: 380px) {
+  .home-card {
+    width: 95vw;
+    aspect-ratio: 1.05 / 1;
+  }
+
+  .home-text h2 {
+    font-size: 16px;
+  }
+
+  .home-image {
+    width: 40%;
+    top: 10%;
+  }
+  .home-play-btn {
+    padding: 10px 45px;
+  }
+  .home-discover-btn {
+    padding: 10px 35px;
+  }
+}
+
+/* Large phones / small tablets (≥ 480px) */
+@media (min-width: 480px) {
+  .home-card {
+    width: 80vw;
+    max-width: 500px;
+    aspect-ratio: 1.3 / 1;
+  }
+
+  .home-image {
+    width: 33%;
+  }
+
+  .home-content {
+    height: 68%;
+  }
+}
+
+/* Tablets and up (≥ 768px) */
+@media (min-width: 768px) {
+  .home-card {
+    width: 60vw;
+    max-width: 600px;
+  }
+
+  .home-text h2 {
+    font-size: 28px;
+  }
+
+  .home-image {
+    right: 4%;
+    top: 6%;
+    width: 30%;
+  }
+}
