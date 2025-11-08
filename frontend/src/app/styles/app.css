@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
 :root {
 --accent-1: #FF6E20;
 --accent-2: #5095FD;
@@ -9,9 +11,9 @@
 --filter: none;
 --fire-gradient-1: #FF6E20;
 --fire-gradient-2: #5095FD;
---font-main: 'Lato', sans-serif;
-
 }
+
+/*-------------------FONTS-----------------*/
 
 @font-face {
   font-family: "Kastroz";
@@ -19,6 +21,69 @@
     url("../assets/fonts/Kastroz-0v5G9.otf") format("opentype");
   font-weight: normal;
 }
+
+
+.lato-thin {
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.lato-light {
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.lato-regular {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lato-bold {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.lato-black {
+  font-family: "Lato", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.lato-thin-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.lato-light-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.lato-regular-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.lato-bold-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.lato-black-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 900;
+  font-style: italic;
+}
+
+/*-------------------FONTS END-----------------*/
 
 body.light-mode {
   --accent-1: #803D19;
@@ -58,10 +123,86 @@ html, body, #root {
   width: 100%;
 }
 
-body { margin:0; font-family: Lato, system-ui, sans-serif; background:var(--text); color:var(--text);}
-.page { padding: 1rem; }
+body { margin:0; font-family: "Lato", system-ui, sans-serif; background:var(--background); color:var(--text);}
+
 
 /*--------------HOME PAGE ELEMENTS----------------------*/
+
+.home-main {
+  position: absolute;
+  top: 15vh;        
+ 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vh;
+  padding-bottom: 10vh;
+  overflow: hidden;
+}
+
+body h1{
+  color: var(--accent-2);
+  font-family: "Lato";
+  font-size: 2.5rem;
+  padding-left: 5%;
+}
+
+.home-section {
+  transform: translateX(5%); 
+  margin-bottom: 5vh;
+  width: 92%;
+}
+
+.home-sectiondif {
+  transform: translateX(5%); 
+  margin-bottom: 5vh;
+  width: 100%;
+}
+
+
+.stories-scroll {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;                     /* space between cards */
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  padding: 1rem 0;
+  scroll-behavior: smooth;
+  scrollbar-width: none;         /* hide scrollbar on Firefox */
+}
+
+.stories-scroll::-webkit-scrollbar {
+  display: none;                 /* hide scrollbar on Chrome/Safari/Edge */
+}
+
+/* Each story card (child) */
+.stories-scroll > * {
+  flex: 0 0 85%;                 /* take up 85% of the visible width */
+  scroll-snap-align: center;     /* snap cleanly to center when scrolling */
+}
+
+.home-section h3{
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-family: "Lato";
+  font-weight: 900px;
+  font-size: 2rem;
+}
+
+.home-sectiondif h3{
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-family: "Lato";
+  font-weight: 900px;
+  font-size: 2rem;
+}
 
 .home-card {
   flex: none;
