@@ -2,6 +2,7 @@ import React from "react";
 
 import { useRef, useState, useEffect } from "react";
 import "../styles/map.css";
+import { useNavigate } from "react-router-dom";
 
 import mapImage from "../assets/images/map.png";
 import europeFolklore from "../assets/images/Europefolklore.png";
@@ -9,6 +10,7 @@ import africaFolklore from "../assets/images/AfricaFolklore.png";
 import asiaFolklore from "../assets/images/AsiaFolklore.png";
 import americaFolklore from "../assets/images/AmericaFolklore.png";
 import closeIcon from "../assets/icons/x.svg";
+import backIcon from "../assets/icons/backarrow.svg";
 
 const creatures = [
     {
@@ -43,6 +45,7 @@ export default function Map() {
     const [start, setStart] = useState({ x: 0, y: 0 });
     const [showHint, setShowHint] = useState(true);
     const [popupVisible, setPopupVisible] = useState(false);
+    const navigate = useNavigate();
   
     const SCALE_X = 4; 
     const SCALE_Y = 4 / 2.13;
@@ -107,6 +110,12 @@ export default function Map() {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
+
+        {/* Back Button */}
+        <button className="back-btn" onClick={() => navigate("/")}>
+            <img src={backIcon} alt="Back" className="back-icon" />
+        </button>
+
         {/* Hint overlay */}
         {showHint && (
           <div className="map-hint">

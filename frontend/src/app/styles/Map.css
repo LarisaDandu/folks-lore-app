@@ -26,7 +26,26 @@
     -webkit-user-drag: none;
     pointer-events: none;
   }
-  
+
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    z-index: 10000;
+    padding: 10px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+  }
+
+  .back-icon {
+    width: 48px;
+    height: 48px;
+    filter: brightness(1.5);
+  }
+
   /* Hint overlay */
   .map-hint {
     position: absolute;
