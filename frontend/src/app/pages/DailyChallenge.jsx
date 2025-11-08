@@ -9,7 +9,7 @@ const Chatbot = () => {
     {
       role: "assistant",
       content:
-        "Welcome to the fire pit. Would you like to guess your daily legend? You have 10 attempts.",
+        "Ah, greetings, traveler. The embers glow, the shadows dance—do you dare step closer? The night whispers secrets, and I, an old storyteller, hold one just for you. Would you like to guess your daily legend? Ten attempts, no more, no less. The fire awaits your words.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -18,15 +18,146 @@ const Chatbot = () => {
   const [attemptsLeft, setAttemptsLeft] = useState(10);
   const scrollRef = useRef(null);
 
+  // 🌑 Full mythic lineup
   const legends = [
-    { name: "Baba Yaga", descriptors: ["Old lady", "White hair", "Witch", "Lives in forest"] },
-    { name: "Wendigo", descriptors: ["Cannibal", "Spirit", "Winter", "Deer skull"] },
-    { name: "Kitsune", descriptors: ["Fox", "Shape-shifter", "Nine tails", "Japan"] },
-    { name: "La Llorona", descriptors: ["Ghost", "Crying", "Children", "River"] },
-    { name: "Anansi", descriptors: ["Spider", "Trickster", "Stories", "Web"] },
+    {
+      name: "Wendigo",
+      descriptors: [
+        "Spirit of hunger",
+        "Gaunt and skeletal",
+        "Eyes glow with starvation",
+        "Elongated limbs",
+        "Voice like howling wind",
+        "Cannibalistic creature",
+        "Born from greed and famine",
+        "Heart made of ice",
+        "Antlers of bone",
+        "Cursed with endless hunger",
+      ],
+    },
+    {
+      name: "Dokkaebi",
+      descriptors: [
+        "Goblin spirit of Korea",
+        "Mischievous and playful",
+        "One-legged and horned",
+        "Carries a magical club",
+        "Rewards the good, punishes the wicked",
+        "Loves rice wine and games",
+        "Appears at night in the forest",
+        "Can shapeshift to trick humans",
+        "Laughter echoes in the dark",
+        "Symbol of chaos and fortune",
+      ],
+    },
+    {
+      name: "Skinwalker",
+      descriptors: [
+        "Navajo witch",
+        "Steals the form of animals",
+        "Eyes glow in the dark",
+        "Wears the skin of its victims",
+        "Cursed practitioner of dark magic",
+        "Swift as a coyote, silent as death",
+        "Reeks of decay and malice",
+        "Feared name, never spoken aloud",
+        "Cannot enter sacred ground",
+        "Hunts those who glimpse its true face",
+      ],
+    },
+    {
+      name: "Chupacabra",
+      descriptors: [
+        "Blood-sucking beast",
+        "Attacks livestock at night",
+        "Red glowing eyes",
+        "Leathery or scaly skin",
+        "Spines running down its back",
+        "Leaps like a kangaroo",
+        "Leaves no footprints",
+        "Seen in the deserts of the Americas",
+        "Feared by farmers and travelers",
+        "Drains life with silent hunger",
+      ],
+    },
+    {
+      name: "Baba Yaga",
+      descriptors: [
+        "Old witch of the woods",
+        "Iron teeth and bony legs",
+        "Flies in a mortar and pestle",
+        "Lives in a hut on chicken legs",
+        "Eyes that pierce lies",
+        "Keeper of ancient wisdom",
+        "Feeds on the foolish",
+        "Tests the brave and the lost",
+        "Commands fire and storms",
+        "Half-helper, half-horror",
+      ],
+    },
+    {
+      name: "Anansi",
+      descriptors: [
+        "Trickster spider god",
+        "Weaver of stories",
+        "Bringer of wisdom",
+        "Clever and mischievous",
+        "Outsmarts gods and beasts",
+        "Spins webs of deceit and truth",
+        "Symbol of wit and resilience",
+        "Speaks in riddles",
+        "Laughs at human folly",
+        "Loves tales and lessons alike",
+      ],
+    },
+    {
+      name: "Inkanyamba",
+      descriptors: [
+        "Giant serpent of South Africa",
+        "Dwells in waterfalls and storms",
+        "Controls thunder and lightning",
+        "Eyes like glowing amber",
+        "Wings hidden beneath its scales",
+        "Brings floods when angered",
+        "Feared by fishermen and travelers",
+        "Guardian of sacred waters",
+        "Invisible until provoked",
+        "Spirit of vengeance and rain",
+      ],
+    },
+    {
+      name: "Adze",
+      descriptors: [
+        "Vampiric firefly spirit",
+        "Origin of Ewe folklore",
+        "Feeds on blood and life force",
+        "Possesses humans in the night",
+        "Spreads jealousy and sickness",
+        "Appears as a glowing insect",
+        "Cannot cross salt or iron",
+        "Exposes hidden envy",
+        "Destroyed only by ritual fire",
+        "Feared by villagers and healers alike",
+      ],
+    },
+    {
+      name: "Leshy",
+      descriptors: [
+        "Forest guardian spirit",
+        "Tall as trees, small as moss",
+        "Eyes glow green like leaves",
+        "Voice mimics wanderers",
+        "Protector of animals",
+        "Leads travelers astray for fun",
+        "Shape-shifts into beasts or men",
+        "Whistles through the wind",
+        "Can befriend those who respect the forest",
+        "Angers when nature is harmed",
+      ],
+    },
   ];
 
-  // 🧭 Pick today's legend (based on Danish time)
+  // 🌘 Pick today’s legend
   const [dailyLegend, setDailyLegend] = useState(null);
   useEffect(() => {
     const dkDate = new Date(
@@ -36,7 +167,7 @@ const Chatbot = () => {
     setDailyLegend(legends[dayOfYear % legends.length]);
   }, []);
 
-  // 🕒 Countdown timer
+  // ⏳ Countdown timer
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
@@ -61,8 +192,9 @@ const Chatbot = () => {
     });
   }, [messages]);
 
-  const simulateTyping = (fullText, speedMs = 45) => {
-    return new Promise((resolve) => {
+  // 🌀 Faster typing speed
+  const simulateTyping = (fullText, speedMs = 20) =>
+    new Promise((resolve) => {
       let i = 0;
       const tick = () => {
         setMessages((prev) => {
@@ -76,7 +208,6 @@ const Chatbot = () => {
       };
       tick();
     });
-  };
 
   const handleSend = async () => {
     if (!input.trim() || loading || attemptsLeft <= 0) return;
@@ -96,21 +227,20 @@ const Chatbot = () => {
             {
               role: "system",
               content: `
-You are "Storyteller", a wise, ancient entity who guards the fire pit of legends. 
-You always respond in a dark, mystical, and poetic tone. 
+You are "Storyteller", a wise, ancient entity who guards the fire pit of legends.
+You always respond in a dark, mystical, and poetic tone.
 Your role is to challenge the user to guess the "legend of the day": ${dailyLegend?.name}.
 You must NEVER say the legend's name directly, unless the user guesses it exactly.
-Instead, you provide clues through riddles and imagery based on these descriptors: 
+Instead, you provide clues through riddles and imagery based on these descriptors:
 ${dailyLegend?.descriptors.join(", ")}.
 
-Rules you must follow:
-- Always stay in-character as "Storyteller".
-- You have seen countless legends and souls. Speak with riddles, mystery, and warmth.
-- Each message from the user counts as one attempt. There are 10 attempts total.
-- If the user guesses the legend name correctly, congratulate them in a grand, fiery way.
-- If they fail after 10 attempts, reveal the correct legend softly and close the session.
-- If they say random things or go off-topic, respond enigmatically but guide them back.
-- Always keep the tone immersive and in-world.
+STRICT RULES:
+- Never reveal new clues, descriptors, or answers unless the user’s question directly asks for confirmation (e.g. "Does it live in the forest?").
+- Only confirm or deny such guesses, briefly and poetically.
+- If the user asks open questions ("Where does it live?" or "What is it?"), refuse gently with short, poetic replies reminding them to ask yes/no questions.
+- Keep most answers short (1–3 poetic sentences).
+- Only speak at length if the user guesses the creature correctly—then, tell its full story.
+- Always remain in-character as Storyteller, keeper of fire and legend.
               `,
             },
             ...messages,
@@ -120,10 +250,15 @@ Rules you must follow:
       });
 
       const data = await response.json();
-      const aiReply = data.choices?.[0]?.message?.content || "(The fire crackles softly...)";
+      let aiReply = data.choices?.[0]?.message?.content || "(The fire crackles softly...)";
+
+      // ✂️ Limit overly long replies unless it's a story
+      if (!aiReply.toLowerCase().includes("you have guessed") && aiReply.length > 350) {
+        aiReply = aiReply.split(". ").slice(0, 2).join(". ") + "...";
+      }
 
       setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
-      await simulateTyping(aiReply, 45);
+      await simulateTyping(aiReply, 20);
     } catch {
       setMessages((prev) => [
         ...prev,

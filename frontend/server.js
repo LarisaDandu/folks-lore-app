@@ -15,37 +15,40 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "dist")));
 
-// ✅ Chat route (now uses plain model API)
+// ✅ Chat route — now uses your Mistral Agent again
 app.post("/api/chat", async (req, res) => {
   const { messages } = req.body;
 
   try {
-    const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.VITE_MISTRAL_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "mistral-small-latest", // ✅ or mistral-medium-latest if you prefer
-        messages,
-        max_tokens: 500,
-      }),
-    });
+    const response = await fetch(
+      `https://api.mistral.ai/v1/agents/${process.env.VITE_MISTRAL_AGENT_ID}/completions`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.VITE_MISTRAL_API_KEY}`,
+        },
+        body: JSON.stringify({
+          input: messages,
+          max_tokens: 500,
+        }),
+      }
+    );
 
     const data = await response.json();
-    console.log("🪄 Mistral API response:", data);
+    console.log("🪄 Mistral Agent response:", data);
 
-    // ✅ Adapt response format for your frontend
     const reply =
-      data.choices?.[0]?.message?.content || "(The fire crackles softly...)";
+      data.output?.[0]?.content ||
+      data.choices?.[0]?.message?.content ||
+      "(The fire crackles softly...)";
 
     res.json({
       choices: [{ message: { content: reply } }],
     });
   } catch (error) {
-    console.error("🔥 Error contacting Mistral:", error);
-    res.status(500).json({ error: "Failed to reach Mistral API" });
+    console.error("🔥 Error contacting Mistral Agent:", error);
+    res.status(500).json({ error: "Failed to reach Mistral Agent" });
   }
 });
 
