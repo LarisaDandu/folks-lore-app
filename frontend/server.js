@@ -15,10 +15,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "dist")));
 
-console.log("🔑 Mistral Key prefix:", process.env.VITE_MISTRAL_API_KEY?.slice(0, 8));
-console.log("🧾 Agent ID:", process.env.VITE_MISTRAL_AGENT_ID);
-
-
 // ✅ Chat route
 app.post("/api/chat", async (req, res) => {
   const { messages } = req.body;
