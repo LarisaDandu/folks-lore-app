@@ -10,49 +10,45 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Serve your built frontend
+// Serve built frontend
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "dist")));
 
-// ✅ Chat route — now uses your Mistral Agent again
+// 🔥 Chat route — direct Mistral chat completion
 app.post("/api/chat", async (req, res) => {
   const { messages } = req.body;
 
   try {
-    const response = await fetch(
-      `https://api.mistral.ai/v1/agents/${process.env.VITE_MISTRAL_AGENT_ID}/completions`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.VITE_MISTRAL_API_KEY}`,
-        },
-        body: JSON.stringify({
-          input: messages,
-          max_tokens: 500,
-        }),
-      }
-    );
+    const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.VITE_MISTRAL_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "mistral-small-latest", // or mistral-medium-latest
+        messages,
+        max_tokens: 500,
+      }),
+    });
 
     const data = await response.json();
-    console.log("🪄 Mistral Agent response:", data);
+    console.log("🪄 Mistral API response:", data);
 
     const reply =
-      data.output?.[0]?.content ||
-      data.choices?.[0]?.message?.content ||
-      "(The fire crackles softly...)";
+      data.choices?.[0]?.message?.content || "(The fire crackles softly...)";
 
     res.json({
       choices: [{ message: { content: reply } }],
     });
   } catch (error) {
-    console.error("🔥 Error contacting Mistral Agent:", error);
-    res.status(500).json({ error: "Failed to reach Mistral Agent" });
+    console.error("🔥 Error contacting Mistral:", error);
+    res.status(500).json({ error: "Failed to reach Mistral API" });
   }
 });
 
-// ✅ Serve frontend for all routes
+// Serve frontend for all routes
 app.get("*", (_, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
