@@ -20,19 +20,33 @@ app.post("/api/chat", async (req, res) => {
   const { messages } = req.body;
 
   try {
-    const response = await fetch("https://api.mistral.ai/v1/agents/" + process.env.VITE_MISTRAL_AGENT_ID + "/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.VITE_MISTRAL_API_KEY}`,
-      },
-      body: JSON.stringify({
-        input: messages,
-      }),
-    });
+    const response = await fetch(
+      `https://api.mistral.ai/v1/agents/${process.env.VITE_MISTRAL_AGENT_ID}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.VITE_MISTRAL_API_KEY}`,
+        },
+        body: JSON.stringify({
+          input: messages, // ✅ Mistral expects "input" instead of "messages"
+          max_tokens: 500,
+        }),
+      }
+    );
 
     const data = await response.json();
-    res.json(data);
+    console.log("🧙 Mistral API response:", data);
+
+    // ✅ Adapt response format so frontend understands it
+    const reply =
+      data.output?.[0]?.content ||
+      data.choices?.[0]?.message?.content ||
+      "(The fire crackles softly...)";
+
+    res.json({
+      choices: [{ message: { content: reply } }],
+    });
   } catch (error) {
     console.error("🔥 Error contacting Mistral:", error);
     res.status(500).json({ error: "Failed to reach Mistral API" });
