@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/story.css";
 import { supabase } from "../../../../supabase/supabaseClient.js";
+import backIcon from "../assets/icons/backarrow.svg";
+
 
 export default function Story() {
   const { id } = useParams();
@@ -50,6 +52,10 @@ useEffect(() => {
     );
 
   return (
+    <>
+    <button className="back-btn" onClick={() => navigate(-1)}>
+        <img src={backIcon} alt="Back" className="back-icon" />
+      </button>
     <div className="story-page">
       {/* ===== HERO / STATS CARD ===== */}
       <section id={story.id} className="stats-card">
@@ -166,5 +172,6 @@ useEffect(() => {
         </div>
       )}
     </div>
+    </>
   );
 }

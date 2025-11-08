@@ -14,7 +14,7 @@ export default function Home() {
     <section className="home-main">
       <h1>Hello</h1>
       <section className="home-sectiondif">
-        <h3>Top stories for you!</h3>
+        <h3>Top stories</h3>
         <div className="stories-scroll">
           <StoryCard id={1} />
           <StoryCard id={2} />
