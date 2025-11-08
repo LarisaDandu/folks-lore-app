@@ -5,7 +5,7 @@ import "../styles/Map.css";
 import { useNavigate } from "react-router-dom";
 
 import mapImage from "../assets/images/map.png";
-import europeFolklore from "../assets/images/Europefolklore.png";
+import europeFolklore from "../assets/images/EuropeFolklore.png";
 import africaFolklore from "../assets/images/AfricaFolklore.png";
 import asiaFolklore from "../assets/images/AsiaFolklore.png";
 import americaFolklore from "../assets/images/AmericaFolklore.png";
