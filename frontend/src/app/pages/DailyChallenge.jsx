@@ -14,8 +14,8 @@ const Chatbot = () => {
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [dailyLegend, setDailyLegend] = useState(null);
   const [timeLeft, setTimeLeft] = useState("");
+  const [attemptsLeft, setAttemptsLeft] = useState(10);
   const scrollRef = useRef(null);
 
   const legends = [
@@ -26,6 +26,8 @@ const Chatbot = () => {
     { name: "Anansi", descriptors: ["Spider", "Trickster", "Stories", "Web"] },
   ];
 
+  // 🧭 Pick today's legend (based on Danish time)
+  const [dailyLegend, setDailyLegend] = useState(null);
   useEffect(() => {
     const dkDate = new Date(
       new Date().toLocaleString("en-US", { timeZone: "Europe/Copenhagen" })
@@ -34,6 +36,7 @@ const Chatbot = () => {
     setDailyLegend(legends[dayOfYear % legends.length]);
   }, []);
 
+  // 🕒 Countdown timer
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
@@ -76,10 +79,12 @@ const Chatbot = () => {
   };
 
   const handleSend = async () => {
-    if (!input.trim() || loading) return;
+    if (!input.trim() || loading || attemptsLeft <= 0) return;
+
     const userMsg = { role: "user", content: input };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
+    setAttemptsLeft((prev) => prev - 1);
     setLoading(true);
 
     try {
@@ -88,7 +93,26 @@ const Chatbot = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: [
-            { role: "system", content: `You are "Storyteller", legend: ${dailyLegend?.name}` },
+            {
+              role: "system",
+              content: `
+You are "Storyteller", a wise, ancient entity who guards the fire pit of legends. 
+You always respond in a dark, mystical, and poetic tone. 
+Your role is to challenge the user to guess the "legend of the day": ${dailyLegend?.name}.
+You must NEVER say the legend's name directly, unless the user guesses it exactly.
+Instead, you provide clues through riddles and imagery based on these descriptors: 
+${dailyLegend?.descriptors.join(", ")}.
+
+Rules you must follow:
+- Always stay in-character as "Storyteller".
+- You have seen countless legends and souls. Speak with riddles, mystery, and warmth.
+- Each message from the user counts as one attempt. There are 10 attempts total.
+- If the user guesses the legend name correctly, congratulate them in a grand, fiery way.
+- If they fail after 10 attempts, reveal the correct legend softly and close the session.
+- If they say random things or go off-topic, respond enigmatically but guide them back.
+- Always keep the tone immersive and in-world.
+              `,
+            },
             ...messages,
             userMsg,
           ],
@@ -112,7 +136,6 @@ const Chatbot = () => {
 
   return (
     <div className="chat-wrapper">
-      {/* 🧭 Challenge Top Bar */}
       <ChallengeTopBar onBack={() => window.history.back()} />
 
       <div className="fire-glow"></div>
@@ -142,9 +165,14 @@ const Chatbot = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Type here..."
+            placeholder={
+              attemptsLeft > 0
+                ? `Type your question... (${attemptsLeft} attempts left)`
+                : "No attempts left — await the next legend."
+            }
+            disabled={attemptsLeft <= 0}
           />
-          <button onClick={handleSend} disabled={loading}>
+          <button onClick={handleSend} disabled={loading || attemptsLeft <= 0}>
             <span>➤</span>
           </button>
         </div>
