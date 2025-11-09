@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../styles/story.css";
 import { supabase } from "../../../../supabase/supabaseClient.js";
 import backIcon from "../assets/icons/backarrow.svg";
-
+import Linkify from "react-linkify";
 
 export default function Story() {
   const { id } = useParams();
@@ -103,7 +103,15 @@ useEffect(() => {
       {/* ===== STORY TEXT ===== */}
       <section className="story-section">
         <h2>Story</h2>
+        <Linkify
+      componentDecorator={(href, text, key) => (
+            <a href={href} key={key} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-3)' }}>
+              {text}
+            </a>
+          )}
+        >
         <p className="white-space-pre-line">{story.story}</p>
+        </Linkify>
       </section>
 
       {/* ===== FORUM ===== */}
