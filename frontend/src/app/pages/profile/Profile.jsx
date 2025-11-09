@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import "../../styles/Profile.css";
+import "../../styles/profile.css";
 import { useNavigate } from "react-router-dom";
 
 import backIcon from "../../assets/icons/backarrow.svg";

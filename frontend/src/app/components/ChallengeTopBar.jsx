@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "../styles/ChallengeTopBar.css";
-import currencyIcon from "../assets/images/currency.png";
+import currencyIcon from "../assets/icons/currency.svg";
 import infoButton from "../assets/images/info_button.png";
-import storytellerImg from "../assets/images/storyteller.png"; // for popup images
+import storytellerImg from "../assets/images/storyteller.png";
+import backIcon from "../assets/icons/backarrow.svg";
 
 const ChallengeTopBar = ({ onBack }) => {
   const [showInfo, setShowInfo] = useState(false);
@@ -14,20 +15,9 @@ const ChallengeTopBar = ({ onBack }) => {
     <>
       {/* === Top Section === */}
       <div className="challenge-topbar-container">
+        {/* ✅ Use your imported backarrow.svg here */}
         <div className="challenge-topbar-arrow" onClick={onBack}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="var(--accent-2)"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="arrow-icon"
-          >
-            <line x1="20" y1="12" x2="5" y2="12" />
-            <polyline points="12 5 5 12 12 19" />
-          </svg>
+          <img src={backIcon} alt="Back" className="arrow-icon" />
         </div>
 
         <div className="challenge-topbar-row">
