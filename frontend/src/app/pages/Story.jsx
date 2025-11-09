@@ -103,7 +103,7 @@ useEffect(() => {
       {/* ===== STORY TEXT ===== */}
       <section className="story-section">
         <h2>Story</h2>
-        <p>{story.story}</p>
+        <p className="white-space-pre-line">{story.story}</p>
       </section>
 
       {/* ===== FORUM ===== */}

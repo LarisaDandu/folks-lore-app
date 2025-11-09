@@ -7,6 +7,10 @@
   box-sizing: border-box; /* prevents inputs from overflowing their parent */
 }
 
+  .white-space-pre-line {
+    white-space: pre-line;
+  }
+
   .back-btn {
     position: absolute !important;
     top: 17vh !important;
