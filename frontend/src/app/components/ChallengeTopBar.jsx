@@ -1,11 +1,10 @@
-import { useState } from "react";
 import "../styles/ChallengeTopBar.css";
 import currencyIcon from "../assets/icons/currency.svg";
 import infoButton from "../assets/images/info_button.png";
 import storytellerImg from "../assets/images/storyteller.png";
 import backIcon from "../assets/icons/backarrow.svg";
 
-const ChallengeTopBar = ({ onBack }) => {
+const ChallengeTopBar = ({ onBack, currency, onCurrencyClick }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [page, setPage] = useState(0);
 
@@ -15,15 +14,14 @@ const ChallengeTopBar = ({ onBack }) => {
     <>
       {/* === Top Section === */}
       <div className="challenge-topbar-container">
-        {/* ✅ Use your imported backarrow.svg here */}
         <div className="challenge-topbar-arrow" onClick={onBack}>
           <img src={backIcon} alt="Back" className="arrow-icon" />
         </div>
 
         <div className="challenge-topbar-row">
-          <div className="currency-section">
+          <div className="currency-section" onClick={onCurrencyClick}>
             <img src={currencyIcon} alt="Currency" className="currency-icon" />
-            <span className="currency-amount">800</span>
+            <span className="currency-amount">{currency}</span>
           </div>
 
           <img
@@ -48,7 +46,6 @@ const ChallengeTopBar = ({ onBack }) => {
               handleNext();
             }}
           >
-            {/* === Page 1 === */}
             {page === 0 && (
               <>
                 <h2>Welcome to the Daily Challenge!</h2>
@@ -57,8 +54,6 @@ const ChallengeTopBar = ({ onBack }) => {
                 <img src={storytellerImg} alt="Storyteller" className="popup-image" />
               </>
             )}
-
-            {/* === Page 2 === */}
             {page === 1 && (
               <>
                 <h2>Each dawn you start with 1000 points</h2>
@@ -66,8 +61,6 @@ const ChallengeTopBar = ({ onBack }) => {
                 <img src={storytellerImg} alt="Storyteller" className="popup-image" />
               </>
             )}
-
-            {/* === Page 3 === */}
             {page === 2 && (
               <>
                 <h2>If you hit 0, the game ends.</h2>
@@ -79,8 +72,6 @@ const ChallengeTopBar = ({ onBack }) => {
                 <img src={storytellerImg} alt="Storyteller" className="popup-image" />
               </>
             )}
-
-            {/* Pagination Dots */}
             <div className="popup-dots">
               {[0, 1, 2].map((i) => (
                 <span key={i} className={`dot ${page === i ? "active" : ""}`} />
