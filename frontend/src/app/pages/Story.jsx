@@ -4,6 +4,9 @@ import "../styles/story.css";
 import { supabase } from "../../../../supabase/supabaseClient.js";
 import backIcon from "../assets/icons/backarrow.svg";
 import Linkify from "react-linkify";
+import heartIcon from "../assets/icons/Heart.svg";
+import commentIcon from "../assets/icons/Comment.svg";
+import flagIcon from "../assets/icons/Flag.svg";
 
 export default function Story() {
   const { id } = useParams();
@@ -179,8 +182,18 @@ export default function Story() {
               <div className="avatar" />
               <div className="bubble">
                 <h4>@samsung_lover</h4>
-                <p>SMASH!!!</p>
-                <div className="post-icons">💙 💬 🔗</div>
+                <p>This reminds me of how my grandma used to tell stories </p>
+                <div className="post-icons"> 
+                    <button className="icon-btn" type="button" >
+                <img src={heartIcon} alt="Like" /> 
+                </button>
+                <button className="icon-btn" type="button" >
+                <img src={commentIcon} alt="Comment" /> 
+                </button>
+                <button className="icon-btn" type="button" >
+                <img src={flagIcon} alt="Report" /> 
+                </button>
+                </div>
               </div>
             </div>
 

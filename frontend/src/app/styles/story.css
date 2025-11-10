@@ -83,7 +83,7 @@
 .icon-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(0,184,255,.6);
+  border: none;
   background: transparent;
   color: #fff;
   border-radius: 50%;
@@ -157,7 +157,7 @@
   width: 116%;
   height: 60px;
   transform: skewX(-18deg); /* diagonal */
-  background: linear-gradient(90deg,#1b2740 0%, #2b86a6 45%, #5de1ff 100%);
+  background: linear-gradient(90deg,var(--accent-2), var(--accent-3));
   border-radius: 10px;
   box-shadow: 0 4px 14px rgba(0,184,255,.25);
 }
