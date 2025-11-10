@@ -1,3 +1,6 @@
+@import url("app.css");
+
+/* --- MAP --- */
 .map-page {
     position: relative;
     overflow: hidden;
@@ -27,6 +30,8 @@
     pointer-events: none;
   }
 
+  /* --- BACK BUTTON  --- */
+
   .back-btn {
     position: absolute;
     top: 20px;
@@ -46,7 +51,8 @@
     filter: brightness(1.5);
   }
 
-  /* Hint overlay */
+ /* --- HINT OVERLAY --- */
+
   .map-hint {
     position: absolute;
     top: 50%;
@@ -65,6 +71,7 @@
   }
 
   /* --- CREATURE MARKERS --- */
+
   .creature-icon {
     position: absolute;  
     width: 140px;    
@@ -74,7 +81,7 @@
     z-index: 100;
   }
 
-/* Center popup */
+/* --- CREATURE POPUP --- */
 .popup-layer {
     position: fixed;
     top: 0;

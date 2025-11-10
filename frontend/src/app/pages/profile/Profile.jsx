@@ -2,14 +2,17 @@ import React, { useRef, useState, useEffect } from "react";
 import "../../styles/profile.css";
 import { useNavigate } from "react-router-dom";
 
+// --- Assets ---
 import backIcon from "../../assets/icons/backarrow.svg";
 import editButton from "../../assets/icons/edit.svg";
 import Forest from "../../assets/images/Forestback.png";
 import Explorer from "../../assets/images/Explorer.png";
 
+// --- Profile Page Component ---
 export default function Profile() {
   const navigate = useNavigate();
 
+  // --- Persistent user data (stored locally) ---
   const [coverSrc, setCoverSrc] = useState(
     () => localStorage.getItem("profile.coverSrc") || Forest
   );
@@ -19,9 +22,13 @@ export default function Profile() {
   const [username, setUsername] = useState(
     () => localStorage.getItem("profile.username") || "Explorer"
   );
-  const [isEditingName, setIsEditingName] = useState(false);
 
-  const [interests, setInterests] = useState([
+  // --- Profile state management ---
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [selected, setSelected] = useState([]);
+
+  // --- Interest tags (static for now) ---
+  const [interests] = useState([
     "Mythology",
     "Horror",
     "Fairy Tale",
@@ -36,43 +43,34 @@ export default function Profile() {
     "North America",
     "Australia and Oceania",
   ]);
-  const [selected, setSelected] = useState([]);
 
-  // New dropdown menu state
+  // --- Dropdown menu visibility states ---
   const [showCoverMenu, setShowCoverMenu] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
 
-  // close menus when clicking outside
+  // --- Refs for hidden image input elements ---
+  const coverInputRef = useRef(null);
+  const avatarInputRef = useRef(null);
+
+  // --- Close dropdowns when clicking outside ---
   useEffect(() => {
     const handleClickOutside = (e) => {
       const clickedInsideCoverMenu = e.target.closest(".edit-menu.cover-menu");
       const clickedInsideAvatarMenu = e.target.closest(".edit-menu.avatar-menu");
       const clickedEditButton = e.target.closest(".hero-edit-btn, .avatar-wrapper");
-  
+
       // If click is not inside any active area → close both
       if (!clickedInsideCoverMenu && !clickedInsideAvatarMenu && !clickedEditButton) {
         setShowCoverMenu(false);
         setShowAvatarMenu(false);
       }
     };
-  
+
     window.addEventListener("click", handleClickOutside);
     return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
-  // hidden inputs to open phone gallery
-  const coverInputRef = useRef(null);
-  const avatarInputRef = useRef(null);
-
-  const toggleInterest = (interest) => {
-    setSelected((prev) =>
-      prev.includes(interest)
-        ? prev.filter((i) => i !== interest)
-        : [...prev, interest]
-    );
-  };
-
-  // helpers
+  // --- Helper: Convert selected image to Base64 URL for localStorage ---
   const fileToDataURL = (file) =>
     new Promise((resolve, reject) => {
       const r = new FileReader();
@@ -81,9 +79,12 @@ export default function Profile() {
       r.readAsDataURL(file);
     });
 
+  // --- Handle image upload for cover or avatar ---
   const handlePick = async (e, kind) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // --- Validate file type and size ---
     if (!file.type.startsWith("image/")) {
       alert("Please choose an image file.");
       return;
@@ -92,8 +93,10 @@ export default function Profile() {
       alert("That image is a bit large. Try one under ~2.5MB.");
       return;
     }
+
     const dataUrl = await fileToDataURL(file);
 
+    // --- Save new image locally and close menu ---
     if (kind === "cover") {
       setCoverSrc(dataUrl);
       localStorage.setItem("profile.coverSrc", dataUrl);
@@ -103,10 +106,10 @@ export default function Profile() {
       localStorage.setItem("profile.avatarSrc", dataUrl);
       setShowAvatarMenu(false);
     }
-    e.target.value = "";
+    e.target.value = ""; // Reset file input
   };
 
-  // Reset handlers
+  // --- Reset to default images (and close menus) ---
   const resetCover = () => {
     setCoverSrc(Forest);
     localStorage.removeItem("profile.coverSrc");
@@ -124,6 +127,16 @@ export default function Profile() {
     }, 0);
   };
 
+  // --- Interest tag toggling ---
+  const toggleInterest = (interest) => {
+    setSelected((prev) =>
+      prev.includes(interest)
+        ? prev.filter((i) => i !== interest)
+        : [...prev, interest]
+    );
+  };
+
+  // --- Username editing logic ---
   const startEditName = () => setIsEditingName(true);
   const commitName = (value) => {
     const v = value.trim() || username;
@@ -142,7 +155,7 @@ export default function Profile() {
 
   return (
     <div className="profile-container">
-      {/* Hidden inputs for gallery */}
+      {/* --- Hidden file inputs (triggered by buttons) --- */}
       <input
         ref={coverInputRef}
         type="file"
@@ -158,15 +171,16 @@ export default function Profile() {
         onChange={(e) => handlePick(e, "avatar")}
       />
 
+      {/* --- Top "hero" section with cover and avatar --- */}
       <div className="hero-section">
         <img src={coverSrc} alt="background" className="hero-bg" />
 
-        {/* Back button */}
+        {/* Back navigation button */}
         <button className="back-btn" onClick={() => navigate("/")}>
           <img src={backIcon} alt="Back" className="icon" />
         </button>
 
-        {/* Edit background image */}
+        {/* Edit background image controls */}
         <div
           className="edit-wrapper"
           onClick={(e) => {
@@ -179,6 +193,7 @@ export default function Profile() {
             <img src={editButton} alt="edit" />
           </button>
 
+          {/* Dropdown for background edit options */}
           {showCoverMenu && (
             <div className="edit-menu">
               <button onClick={() => coverInputRef.current?.click()}>
@@ -189,7 +204,7 @@ export default function Profile() {
           )}
         </div>
 
-        {/* Avatar + edit */}
+        {/* Avatar image + edit menu */}
         <div className="avatar-section">
           <div
             className="avatar-wrapper"
@@ -202,6 +217,7 @@ export default function Profile() {
             <img src={avatarSrc} alt="avatar" className="avatar-img" />
           </div>
 
+          {/* Dropdown for avatar edit options */}
           {showAvatarMenu && (
             <div className="edit-menu avatar-menu">
               <button onClick={() => avatarInputRef.current?.click()}>
@@ -213,8 +229,9 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Profile Info */}
+      {/* --- Profile info section --- */}
       <div className="profile-info">
+        {/* Editable username field */}
         <div className="username-row">
           {isEditingName ? (
             <div className="username-edit-container">
@@ -253,8 +270,10 @@ export default function Profile() {
           )}
         </div>
 
+        {/* Static user info */}
         <p className="user-handle">Joined 20.10.2025</p>
 
+        {/* User stats (for challenge progress, XP, etc.) */}
         <div className="stats">
           <div className="stat">
             <span className="stat-value">26</span>
@@ -267,6 +286,7 @@ export default function Profile() {
           </div>
         </div>
 
+        {/* Interest selection grid */}
         <h2 className="interests-title">Interests</h2>
         <div className="interests-grid">
           {interests.map((interest, index) => (
