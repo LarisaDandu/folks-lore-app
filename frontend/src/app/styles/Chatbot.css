@@ -264,3 +264,26 @@
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* 🔥 Fire glow animation when refilling */
+.fire-revive {
+  animation: firePulse 2s ease-in-out;
+  box-shadow: 0 0 40px 15px rgba(255, 120, 40, 0.7);
+}
+
+.storyteller-image.glow-bright {
+  filter: drop-shadow(0 0 25px rgba(255, 180, 100, 0.9));
+  transition: filter 0.5s ease;
+}
+
+@keyframes firePulse {
+  0% {
+    box-shadow: 0 0 10px 2px rgba(255, 120, 40, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 60px 20px rgba(255, 150, 50, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 15px 5px rgba(255, 120, 40, 0.4);
+  }
+}
