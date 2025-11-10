@@ -112,12 +112,13 @@
   }
 
   .popup-title {
-    font-size: 1.9rem;
+    font-size: 36px;
     font-weight: 700;
     color: #fff;
     margin: 0;
     line-height: 1.2;
     max-width: 65%;
+    font-family: "Kastroz";
   }
 
   .close-btn {
