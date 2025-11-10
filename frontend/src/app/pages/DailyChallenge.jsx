@@ -16,8 +16,9 @@ const Chatbot = () => {
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
   const [attemptsLeft, setAttemptsLeft] = useState(10);
-  const [currency, setCurrency] = useState(1000); // 💰 added currency system
-  const [fireGlow, setFireGlow] = useState(false); // 🔥 for animation toggle
+  const [currency, setCurrency] = useState(1000);
+  const [fireGlow, setFireGlow] = useState(false);
+  const [blueGlow, setBlueGlow] = useState(false); // 💙 new blue glow animation
   const scrollRef = useRef(null);
 
   // 🌑 Mythic lineup
@@ -131,11 +132,20 @@ const Chatbot = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // 💬 Scroll behavior — allow manual scrolling
   useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    const chat = scrollRef.current;
+    if (!chat) return;
+
+    const isNearBottom =
+      chat.scrollHeight - chat.scrollTop - chat.clientHeight < 150;
+
+    if (isNearBottom) {
+      chat.scrollTo({
+        top: chat.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
 
   const simulateTyping = (fullText, speedMs = 20) =>
@@ -154,9 +164,10 @@ const Chatbot = () => {
       tick();
     });
 
-  // 💰 Handle refill click — animate fire + reset attempts/currency
+  // 💰 Handle refill click — now with blue glow
   const handleCurrencyClick = () => {
     setFireGlow(true);
+    setBlueGlow(true);
     setAttemptsLeft(10);
     setCurrency(1000);
     setMessages((prev) => [
@@ -164,12 +175,14 @@ const Chatbot = () => {
       {
         role: "assistant",
         content:
-          "🔥 The fire flares back to life! Your strength and spirit return, traveler.",
+          "💙 The azure flames roar back to life! Your will burns anew, traveler.",
       },
     ]);
 
-    // end animation after 2 seconds
-    setTimeout(() => setFireGlow(false), 2000);
+    setTimeout(() => {
+      setFireGlow(false);
+      setBlueGlow(false);
+    }, 2500);
   };
 
   const handleSend = async () => {
@@ -179,7 +192,6 @@ const Chatbot = () => {
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
 
-    // 🧠 Count only user inputs toward attempts and currency
     setAttemptsLeft((prev) => Math.max(prev - 1, 0));
     setCurrency((prev) => Math.max(prev - 100, 0));
     setLoading(true);
@@ -257,8 +269,12 @@ Your behavior:
         onCurrencyClick={handleCurrencyClick}
       />
 
-      {/* 🔥 Fire glow effect toggles when refilling */}
-      <div className={`fire-glow ${fireGlow ? "fire-revive" : ""}`}></div>
+      {/* 🔥 Fire glows (normal + blue) */}
+      <div
+        className={`fire-glow ${fireGlow ? "fire-revive" : ""} ${
+          blueGlow ? "blue-fire" : ""
+        }`}
+      ></div>
 
       <div className="storyteller-container">
         <img

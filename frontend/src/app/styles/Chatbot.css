@@ -287,3 +287,24 @@
     box-shadow: 0 0 15px 5px rgba(255, 120, 40, 0.4);
   }
 }
+
+/* 💙 Blue fire pulse when refilling via currency */
+.blue-fire {
+  animation: blueFirePulse 2.2s ease-in-out;
+  box-shadow: 0 0 40px 20px rgba(86, 255, 246, 0.7);
+}
+
+@keyframes blueFirePulse {
+  0% {
+    filter: blur(80px) brightness(0.9);
+    box-shadow: 0 0 20px 8px rgba(86, 255, 246, 0.3);
+  }
+  50% {
+    filter: blur(110px) brightness(1.3);
+    box-shadow: 0 0 60px 30px rgba(86, 255, 246, 0.9);
+  }
+  100% {
+    filter: blur(90px) brightness(1);
+    box-shadow: 0 0 25px 10px rgba(86, 255, 246, 0.4);
+  }
+}
