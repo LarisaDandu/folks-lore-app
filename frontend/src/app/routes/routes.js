@@ -1,3 +1,4 @@
+// src/router/routes.js
 export const ROUTES = {
   HOME: "/",
   MAP: "/map",
@@ -16,5 +17,7 @@ export const ROUTES = {
   REPORT_ISSUE: "/profile/report",
   SIGN_IN: "/signin",
   SIGN_UP: "/signup",
+
+  // 404 catch-all
   ERROR_404: "*",
 };
