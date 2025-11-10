@@ -1,8 +1,10 @@
+import React, { useState } from "react";
 import "../styles/ChallengeTopBar.css";
 import currencyIcon from "../assets/icons/currency.svg";
 import infoButton from "../assets/images/info_button.png";
 import storytellerImg from "../assets/images/storyteller.png";
 import backIcon from "../assets/icons/backarrow.svg";
+
 
 const ChallengeTopBar = ({ onBack, currency, onCurrencyClick }) => {
   const [showInfo, setShowInfo] = useState(false);
