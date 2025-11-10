@@ -17,9 +17,11 @@ const Chatbot = () => {
   const [timeLeft, setTimeLeft] = useState("");
   const [attemptsLeft, setAttemptsLeft] = useState(10);
   const [currency, setCurrency] = useState(1000);
-  const [fireGlow, setFireGlow] = useState(false);
-  const [blueGlow, setBlueGlow] = useState(false); // 💙 new blue glow animation
+  const [currencyGlow, setCurrencyGlow] = useState(false); // 💙 new glow for currency
   const scrollRef = useRef(null);
+  const isDragging = useRef(false);
+  const startY = useRef(0);
+  const scrollTopStart = useRef(0);
 
   // 🌑 Mythic lineup
   const legends = [
@@ -132,21 +134,50 @@ const Chatbot = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 💬 Scroll behavior — allow manual scrolling
+  // 💬 Scroll behavior — only auto-scroll when near bottom
+  useEffect(() => {
+    const chat = scrollRef.current;
+    if (!chat) return;
+    const isNearBottom =
+      chat.scrollHeight - chat.scrollTop - chat.clientHeight < 150;
+    if (isNearBottom) {
+      chat.scrollTo({ top: chat.scrollHeight, behavior: "smooth" });
+    }
+  }, [messages]);
+
+  // 🖱️ Drag-to-scroll setup
   useEffect(() => {
     const chat = scrollRef.current;
     if (!chat) return;
 
-    const isNearBottom =
-      chat.scrollHeight - chat.scrollTop - chat.clientHeight < 150;
+    const onMouseDown = (e) => {
+      isDragging.current = true;
+      startY.current = e.clientY;
+      scrollTopStart.current = chat.scrollTop;
+      chat.style.cursor = "grabbing";
+    };
 
-    if (isNearBottom) {
-      chat.scrollTo({
-        top: chat.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }, [messages]);
+    const onMouseMove = (e) => {
+      if (!isDragging.current) return;
+      const deltaY = e.clientY - startY.current;
+      chat.scrollTop = scrollTopStart.current - deltaY;
+    };
+
+    const onMouseUp = () => {
+      isDragging.current = false;
+      chat.style.cursor = "default";
+    };
+
+    chat.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+
+    return () => {
+      chat.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
 
   const simulateTyping = (fullText, speedMs = 20) =>
     new Promise((resolve) => {
@@ -164,25 +195,19 @@ const Chatbot = () => {
       tick();
     });
 
-  // 💰 Handle refill click — now with blue glow
+  // 💰 Handle refill click — glow under currency
   const handleCurrencyClick = () => {
-    setFireGlow(true);
-    setBlueGlow(true);
+    setCurrencyGlow(true);
     setAttemptsLeft(10);
     setCurrency(1000);
     setMessages((prev) => [
       ...prev,
       {
         role: "assistant",
-        content:
-          "💙 The azure flames roar back to life! Your will burns anew, traveler.",
+        content: "💙 The currency flares with cold blue fire — your will returns, traveler.",
       },
     ]);
-
-    setTimeout(() => {
-      setFireGlow(false);
-      setBlueGlow(false);
-    }, 2500);
+    setTimeout(() => setCurrencyGlow(false), 2000);
   };
 
   const handleSend = async () => {
@@ -267,21 +292,11 @@ Your behavior:
         onBack={() => window.history.back()}
         currency={currency}
         onCurrencyClick={handleCurrencyClick}
+        currencyGlow={currencyGlow} // 💙 pass glow to topbar
       />
 
-      {/* 🔥 Fire glows (normal + blue) */}
-      <div
-        className={`fire-glow ${fireGlow ? "fire-revive" : ""} ${
-          blueGlow ? "blue-fire" : ""
-        }`}
-      ></div>
-
       <div className="storyteller-container">
-        <img
-          src={storytellerImg}
-          alt="Storyteller"
-          className={`storyteller-image ${fireGlow ? "glow-bright" : ""}`}
-        />
+        <img src={storytellerImg} alt="Storyteller" className="storyteller-image" />
       </div>
 
       <div className="chat-overlay">
@@ -289,18 +304,13 @@ Your behavior:
 
         <div className="chat-scroll" ref={scrollRef}>
           {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`chat-bubble ${msg.role === "user" ? "user" : "ai"}`}
-            >
+            <div key={i} className={`chat-bubble ${msg.role === "user" ? "user" : "ai"}`}>
               {msg.content}
             </div>
           ))}
           {loading && (
             <div className="typing-dots">
-              <span>.</span>
-              <span>.</span>
-              <span>.</span>
+              <span>.</span><span>.</span><span>.</span>
             </div>
           )}
         </div>
