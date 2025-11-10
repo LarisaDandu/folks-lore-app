@@ -291,6 +291,19 @@ Additional behavior:
             </div>
           )}
         </div>
+
+        <div className="input-area">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            placeholder="Type your question..."
+          />
+          <button onClick={handleSend} disabled={loading}>
+            <span>➤</span>
+          </button>
+        </div>
         <div className="countdown-box">⏳ New legend in: {timeLeft}</div>
       </div>
     </div>
