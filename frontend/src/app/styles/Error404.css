@@ -91,8 +91,8 @@
   display: inline-block;
   width: 0.8rem;
   height: 0.8rem;
-  border-top: 3px solid #ffffff;
-  border-left: 3px solid #ffffff;
+  border-top: 3px solid var(--accent-3);
+  border-left: 3px solid var(--accent-3);
   transform: rotate(-45deg) translateX(2px);
 }
 
