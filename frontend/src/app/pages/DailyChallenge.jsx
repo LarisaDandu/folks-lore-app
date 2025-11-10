@@ -234,9 +234,11 @@ Do not give clues, hints, or detailed answers unless the user has correctly gues
 If the user asks for clues, respond mysteriously but never reveal information that gives away the legend.
 
 Additional behavior:
-- Keep your responses short (1–3 poetic sentences).
+- Keep your responses short while the user is guessing the creature(1–3 poetic sentences).
 - Only tell a longer, vivid story when the user guesses correctly.
 - Always remain in-character as the Storyteller, keeper of the fire and lore.
+- If the user guesses the character correctly, provide a story about daily creature. Longer paragraph.
+- When starting the chat, do not reveal any clues about the creature, such as location or traits.
               `,
             },
             ...messages,
@@ -289,25 +291,6 @@ Additional behavior:
             </div>
           )}
         </div>
-
-        <div className="input-area">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder={
-              attemptsLeft > 0
-                ? `Type your question... (${attemptsLeft} attempts left)`
-                : "No attempts left — await the next legend."
-            }
-            disabled={attemptsLeft <= 0}
-          />
-          <button onClick={handleSend} disabled={loading || attemptsLeft <= 0}>
-            <span>➤</span>
-          </button>
-        </div>
-
         <div className="countdown-box">⏳ New legend in: {timeLeft}</div>
       </div>
     </div>
