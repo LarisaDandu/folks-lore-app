@@ -83,7 +83,7 @@
 .icon-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(0,184,255,.6);
+  border: none;
   background: transparent;
   color: #fff;
   border-radius: 50%;
@@ -157,7 +157,7 @@
   width: 116%;
   height: 60px;
   transform: skewX(-18deg); /* diagonal */
-  background: linear-gradient(90deg,#1b2740 0%, #2b86a6 45%, #5de1ff 100%);
+  background: linear-gradient(90deg,var(--accent-2), var(--accent-3));
   border-radius: 10px;
   box-shadow: 0 4px 14px rgba(0,184,255,.25);
 }
@@ -304,7 +304,7 @@
   padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom); /* keep it off the edges on small screens */
 }
 
-.popup-card {
+.pop-card {
   background: #0e1120;
   border: 1px solid #00b8ff;
   border-radius: 16px;
@@ -318,12 +318,12 @@
   box-shadow: 0 8px 32px rgba(0,184,255,.25);
 }
 
-.popup-card h3 { margin: 0 0 8px; }
+.pop-card h3 { margin: 0 0 8px; }
 
 /* Inputs were spilling outside: fix by using border-box and an internal focus style */
-.popup-card input,
-.popup-card textarea,
-.popup-card select {
+.pop-card input,
+.pop-card textarea,
+.pop-card select {
   display: block;
   width: 100%;
   background: #050816;
@@ -335,14 +335,14 @@
   box-shadow: 0 0 0 0 rgba(0,0,0,0);
 }
 
-.popup-card input:focus-visible,
-.popup-card textarea:focus-visible,
-.popup-card select:focus-visible {
+.pop-card input:focus-visible,
+.pop-card textarea:focus-visible,
+.pop-card select:focus-visible {
   border-color: #00b8ff;
   box-shadow: 0 0 0 2px rgba(0,184,255,.5); /* stays inside the card */
 }
 
-.popup-card textarea {
+.pop-card textarea {
   height: 90px;
   resize: none;
 }

@@ -16,9 +16,14 @@ const Chatbot = () => {
   const [loading, setLoading] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
   const [attemptsLeft, setAttemptsLeft] = useState(10);
+  const [currency, setCurrency] = useState(1000);
+  const [currencyGlow, setCurrencyGlow] = useState(false); // 💙 new glow for currency
   const scrollRef = useRef(null);
+  const isDragging = useRef(false);
+  const startY = useRef(0);
+  const scrollTopStart = useRef(0);
 
-  // 🌑 Full mythic lineup
+  // 🌑 Mythic lineup
   const legends = [
     {
       name: "Wendigo",
@@ -95,66 +100,6 @@ const Chatbot = () => {
         "Half-helper, half-horror",
       ],
     },
-    {
-      name: "Anansi",
-      descriptors: [
-        "Trickster spider god",
-        "Weaver of stories",
-        "Bringer of wisdom",
-        "Clever and mischievous",
-        "Outsmarts gods and beasts",
-        "Spins webs of deceit and truth",
-        "Symbol of wit and resilience",
-        "Speaks in riddles",
-        "Laughs at human folly",
-        "Loves tales and lessons alike",
-      ],
-    },
-    {
-      name: "Inkanyamba",
-      descriptors: [
-        "Giant serpent of South Africa",
-        "Dwells in waterfalls and storms",
-        "Controls thunder and lightning",
-        "Eyes like glowing amber",
-        "Wings hidden beneath its scales",
-        "Brings floods when angered",
-        "Feared by fishermen and travelers",
-        "Guardian of sacred waters",
-        "Invisible until provoked",
-        "Spirit of vengeance and rain",
-      ],
-    },
-    {
-      name: "Adze",
-      descriptors: [
-        "Vampiric firefly spirit",
-        "Origin of Ewe folklore",
-        "Feeds on blood and life force",
-        "Possesses humans in the night",
-        "Spreads jealousy and sickness",
-        "Appears as a glowing insect",
-        "Cannot cross salt or iron",
-        "Exposes hidden envy",
-        "Destroyed only by ritual fire",
-        "Feared by villagers and healers alike",
-      ],
-    },
-    {
-      name: "Leshy",
-      descriptors: [
-        "Forest guardian spirit",
-        "Tall as trees, small as moss",
-        "Eyes glow green like leaves",
-        "Voice mimics wanderers",
-        "Protector of animals",
-        "Leads travelers astray for fun",
-        "Shape-shifts into beasts or men",
-        "Whistles through the wind",
-        "Can befriend those who respect the forest",
-        "Angers when nature is harmed",
-      ],
-    },
   ];
 
   // 🌘 Pick today’s legend
@@ -163,7 +108,9 @@ const Chatbot = () => {
     const dkDate = new Date(
       new Date().toLocaleString("en-US", { timeZone: "Europe/Copenhagen" })
     );
-    const dayOfYear = Math.floor((dkDate - new Date(dkDate.getFullYear(), 0, 0)) / 86400000);
+    const dayOfYear = Math.floor(
+      (dkDate - new Date(dkDate.getFullYear(), 0, 0)) / 86400000
+    );
     setDailyLegend(legends[dayOfYear % legends.length]);
   }, []);
 
@@ -171,7 +118,9 @@ const Chatbot = () => {
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
-      const dkTime = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Copenhagen" }));
+      const dkTime = new Date(
+        now.toLocaleString("en-US", { timeZone: "Europe/Copenhagen" })
+      );
       const tomorrow = new Date(dkTime);
       tomorrow.setDate(dkTime.getDate() + 1);
       tomorrow.setHours(0, 0, 0, 0);
@@ -185,12 +134,50 @@ const Chatbot = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // 💬 Scroll behavior — only auto-scroll when near bottom
   useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    const chat = scrollRef.current;
+    if (!chat) return;
+    const isNearBottom =
+      chat.scrollHeight - chat.scrollTop - chat.clientHeight < 150;
+    if (isNearBottom) {
+      chat.scrollTo({ top: chat.scrollHeight, behavior: "smooth" });
+    }
   }, [messages]);
+
+  // 🖱️ Drag-to-scroll setup
+  useEffect(() => {
+    const chat = scrollRef.current;
+    if (!chat) return;
+
+    const onMouseDown = (e) => {
+      isDragging.current = true;
+      startY.current = e.clientY;
+      scrollTopStart.current = chat.scrollTop;
+      chat.style.cursor = "grabbing";
+    };
+
+    const onMouseMove = (e) => {
+      if (!isDragging.current) return;
+      const deltaY = e.clientY - startY.current;
+      chat.scrollTop = scrollTopStart.current - deltaY;
+    };
+
+    const onMouseUp = () => {
+      isDragging.current = false;
+      chat.style.cursor = "default";
+    };
+
+    chat.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+
+    return () => {
+      chat.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
 
   const simulateTyping = (fullText, speedMs = 20) =>
     new Promise((resolve) => {
@@ -208,13 +195,30 @@ const Chatbot = () => {
       tick();
     });
 
+  // 💰 Handle refill click — glow under currency
+  const handleCurrencyClick = () => {
+    setCurrencyGlow(true);
+    setAttemptsLeft(10);
+    setCurrency(1000);
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "assistant",
+        content: "💙 The currency flares with cold blue fire — your will returns, traveler.",
+      },
+    ]);
+    setTimeout(() => setCurrencyGlow(false), 2000);
+  };
+
   const handleSend = async () => {
-    if (!input.trim() || loading || attemptsLeft <= 0) return;
+    if (!input.trim() || loading || attemptsLeft <= 0 || currency <= 0) return;
 
     const userMsg = { role: "user", content: input };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
-    setAttemptsLeft((prev) => prev - 1);
+
+    setAttemptsLeft((prev) => Math.max(prev - 1, 0));
+    setCurrency((prev) => Math.max(prev - 100, 0));
     setLoading(true);
 
     try {
@@ -226,17 +230,22 @@ const Chatbot = () => {
             {
               role: "system",
               content: `
-You are "Storyteller", a wise, ancient entity who guards the fire pit of legends.
-You always respond in a dark, mystical, and poetic tone.
-Your role is to challenge the user to guess the "legend of the day": ${dailyLegend?.name}.
-You must NEVER say the legend's name directly, unless the user guesses it exactly.
-Do not give clues, hints, or detailed answers unless the user has correctly guessed the legend.
-If the user asks for clues, respond mysteriously but never reveal information that gives away the legend.
+You are "Storyteller", an ancient keeper of the fire.
+The user is guessing the daily legend: ${dailyLegend?.name}.
+Descriptors of this legend are: ${dailyLegend?.descriptors.join(", ")}.
 
-Additional behavior:
-- Keep your responses short (1–3 poetic sentences).
-- Only tell a longer, vivid story when the user guesses correctly.
-- Always remain in-character as the Storyteller, keeper of the fire and lore.
+Your behavior:
+- If the user guesses or asks about one of the descriptors above, clearly CONFIRM or DENY it.
+  Example:
+    User: "Does it have horns?"
+    Response: "Yes, horns crown its shadowed form."
+    User: "Does it live in a forest?"
+    Response: "No, such woods have never known this creature."
+- Do not speak in riddles unless revealing emotion or atmosphere.
+- Keep your answers short, poetic, but clear (1–3 sentences max).
+- When the user correctly guesses the legend's name, tell its full story in detail.
+- Never reveal new clues unless confirming or denying something already guessed.
+- When the user runs out of attempts or currency, remind them they can refill energy by clicking the currency icon.
               `,
             },
             ...messages,
@@ -246,10 +255,19 @@ Additional behavior:
       });
 
       const data = await response.json();
-      let aiReply = data.choices?.[0]?.message?.content || "(The fire crackles softly...)";
+      let aiReply =
+        data.choices?.[0]?.message?.content ||
+        "(The fire crackles softly...)";
 
-      // ✂️ Limit overly long replies unless it's a story
-      if (!aiReply.toLowerCase().includes("you have guessed") && aiReply.length > 350) {
+      if (attemptsLeft - 1 <= 0 || currency - 100 <= 0) {
+        aiReply +=
+          "\n\n🕯️ The embers dim... You have no energy left. Click the currency to rekindle your flame.";
+      }
+
+      if (
+        !aiReply.toLowerCase().includes("you have guessed") &&
+        aiReply.length > 350
+      ) {
         aiReply = aiReply.split(". ").slice(0, 2).join(". ") + "...";
       }
 
@@ -258,7 +276,10 @@ Additional behavior:
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "The fire fades... try again later." },
+        {
+          role: "assistant",
+          content: "The fire fades... try again later.",
+        },
       ]);
     } finally {
       setLoading(false);
@@ -267,9 +288,13 @@ Additional behavior:
 
   return (
     <div className="chat-wrapper">
-      <ChallengeTopBar onBack={() => window.history.back()} />
+      <ChallengeTopBar
+        onBack={() => window.history.back()}
+        currency={currency}
+        onCurrencyClick={handleCurrencyClick}
+        currencyGlow={currencyGlow} // 💙 pass glow to topbar
+      />
 
-      <div className="fire-glow"></div>
       <div className="storyteller-container">
         <img src={storytellerImg} alt="Storyteller" className="storyteller-image" />
       </div>
@@ -297,13 +322,13 @@ Additional behavior:
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder={
-              attemptsLeft > 0
-                ? `Type your question... (${attemptsLeft} attempts left)`
-                : "No attempts left — await the next legend."
+              attemptsLeft > 0 && currency > 0
+                ? `Type your question... (${attemptsLeft} left, ${currency} pts)`
+                : "Out of strength — click currency to refill."
             }
-            disabled={attemptsLeft <= 0}
+            disabled={attemptsLeft <= 0 || currency <= 0}
           />
-          <button onClick={handleSend} disabled={loading || attemptsLeft <= 0}>
+          <button onClick={handleSend} disabled={loading || attemptsLeft <= 0 || currency <= 0}>
             <span>➤</span>
           </button>
         </div>
