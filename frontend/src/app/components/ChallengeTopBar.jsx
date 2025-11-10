@@ -5,23 +5,20 @@ import infoButton from "../assets/images/info_button.png";
 import storytellerImg from "../assets/images/storyteller.png";
 import backIcon from "../assets/icons/backarrow.svg";
 
-
-const ChallengeTopBar = ({ onBack, currency, onCurrencyClick }) => {
+const ChallengeTopBar = ({ onBack, currency, onCurrencyClick, currencyGlow }) => {
   const [showInfo, setShowInfo] = useState(false);
   const [page, setPage] = useState(0);
-
   const handleNext = () => setPage((prev) => (prev + 1) % 3);
 
   return (
     <>
-      {/* === Top Section === */}
       <div className="challenge-topbar-container">
         <div className="challenge-topbar-arrow" onClick={onBack}>
           <img src={backIcon} alt="Back" className="arrow-icon" />
         </div>
 
         <div className="challenge-topbar-row">
-          <div className="currency-section" onClick={onCurrencyClick}>
+          <div className={`currency-section ${currencyGlow ? "currency-glow" : ""}`} onClick={onCurrencyClick}>
             <img src={currencyIcon} alt="Currency" className="currency-icon" />
             <span className="currency-amount">{currency}</span>
           </div>
@@ -38,16 +35,9 @@ const ChallengeTopBar = ({ onBack, currency, onCurrencyClick }) => {
         </div>
       </div>
 
-      {/* === Overlay Popup === */}
       {showInfo && (
         <div className="info-overlay" onClick={() => setShowInfo(false)}>
-          <div
-            className="info-popup"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleNext();
-            }}
-          >
+          <div className="info-popup" onClick={(e) => { e.stopPropagation(); handleNext(); }}>
             {page === 0 && (
               <>
                 <h2>Welcome to the Daily Challenge!</h2>
@@ -67,10 +57,7 @@ const ChallengeTopBar = ({ onBack, currency, onCurrencyClick }) => {
               <>
                 <h2>If you hit 0, the game ends.</h2>
                 <p>You can buy more points to keep going.</p>
-                <p>
-                  Guess the creature before your points run out to keep your remaining points as
-                  your score!
-                </p>
+                <p>Guess the creature before your points run out to keep your remaining points as your score!</p>
                 <img src={storytellerImg} alt="Storyteller" className="popup-image" />
               </>
             )}
