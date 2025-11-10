@@ -17,7 +17,8 @@ const Chatbot = () => {
   const [timeLeft, setTimeLeft] = useState("");
   const [attemptsLeft, setAttemptsLeft] = useState(10);
   const [currency, setCurrency] = useState(1000);
-  const [currencyGlow, setCurrencyGlow] = useState(false); // 💙 new glow for currency
+  const [currencyGlow, setCurrencyGlow] = useState(false); // 💙 blue glow under currency
+  const [fireGlow, setFireGlow] = useState(false); // 🔥 storyteller glow
   const scrollRef = useRef(null);
   const isDragging = useRef(false);
   const startY = useRef(0);
@@ -102,7 +103,7 @@ const Chatbot = () => {
     },
   ];
 
-  // 🌘 Pick today’s legend
+  // 🌘 Daily legend
   const [dailyLegend, setDailyLegend] = useState(null);
   useEffect(() => {
     const dkDate = new Date(
@@ -134,7 +135,7 @@ const Chatbot = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 💬 Scroll behavior — only auto-scroll when near bottom
+  // 🧭 Scroll logic
   useEffect(() => {
     const chat = scrollRef.current;
     if (!chat) return;
@@ -145,7 +146,7 @@ const Chatbot = () => {
     }
   }, [messages]);
 
-  // 🖱️ Drag-to-scroll setup
+  // 🖱️ Drag scrolling
   useEffect(() => {
     const chat = scrollRef.current;
     if (!chat) return;
@@ -179,6 +180,7 @@ const Chatbot = () => {
     };
   }, []);
 
+  // ✍️ Typing simulation
   const simulateTyping = (fullText, speedMs = 20) =>
     new Promise((resolve) => {
       let i = 0;
@@ -195,24 +197,29 @@ const Chatbot = () => {
       tick();
     });
 
-  // 💰 Handle refill click — glow under currency
+  // 💰 Currency refill — adds blue glow + storyteller fire boost
   const handleCurrencyClick = () => {
     setCurrencyGlow(true);
+    setFireGlow(true);
     setAttemptsLeft(10);
     setCurrency(1000);
     setMessages((prev) => [
       ...prev,
       {
         role: "assistant",
-        content: "💙 The currency flares with cold blue fire — your will returns, traveler.",
+        content:
+          "💙 The currency flares with cold blue fire — the storyteller’s flames rise higher!",
       },
     ]);
-    setTimeout(() => setCurrencyGlow(false), 2000);
+    setTimeout(() => {
+      setCurrencyGlow(false);
+      setFireGlow(false);
+    }, 2000);
   };
 
+  // 🧠 Handle send
   const handleSend = async () => {
     if (!input.trim() || loading || attemptsLeft <= 0 || currency <= 0) return;
-
     const userMsg = { role: "user", content: input };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
@@ -232,20 +239,14 @@ const Chatbot = () => {
               content: `
 You are "Storyteller", an ancient keeper of the fire.
 The user is guessing the daily legend: ${dailyLegend?.name}.
-Descriptors of this legend are: ${dailyLegend?.descriptors.join(", ")}.
+Descriptors: ${dailyLegend?.descriptors.join(", ")}.
 
-Your behavior:
-- If the user guesses or asks about one of the descriptors above, clearly CONFIRM or DENY it.
-  Example:
-    User: "Does it have horns?"
-    Response: "Yes, horns crown its shadowed form."
-    User: "Does it live in a forest?"
-    Response: "No, such woods have never known this creature."
-- Do not speak in riddles unless revealing emotion or atmosphere.
-- Keep your answers short, poetic, but clear (1–3 sentences max).
-- When the user correctly guesses the legend's name, tell its full story in detail.
-- Never reveal new clues unless confirming or denying something already guessed.
-- When the user runs out of attempts or currency, remind them they can refill energy by clicking the currency icon.
+Behavior:
+- Confirm or deny descriptors clearly.
+- Keep answers short and poetic (1–3 sentences).
+- Tell the full story if guessed correctly.
+- Never reveal new clues unless confirming/denying.
+- When out of points, remind user to refill via the currency icon.
               `,
             },
             ...messages,
@@ -261,7 +262,7 @@ Your behavior:
 
       if (attemptsLeft - 1 <= 0 || currency - 100 <= 0) {
         aiReply +=
-          "\n\n🕯️ The embers dim... You have no energy left. Click the currency to rekindle your flame.";
+          "\n\n🕯️ The embers dim... Click the currency to rekindle your flame.";
       }
 
       if (
@@ -292,11 +293,18 @@ Your behavior:
         onBack={() => window.history.back()}
         currency={currency}
         onCurrencyClick={handleCurrencyClick}
-        currencyGlow={currencyGlow} // 💙 pass glow to topbar
+        currencyGlow={currencyGlow}
       />
 
+      {/* 🔥 Storyteller fire glow retained */}
+      <div className={`fire-glow ${fireGlow ? "fire-revive" : ""}`}></div>
+
       <div className="storyteller-container">
-        <img src={storytellerImg} alt="Storyteller" className="storyteller-image" />
+        <img
+          src={storytellerImg}
+          alt="Storyteller"
+          className={`storyteller-image ${fireGlow ? "glow-bright" : ""}`}
+        />
       </div>
 
       <div className="chat-overlay">
@@ -304,7 +312,10 @@ Your behavior:
 
         <div className="chat-scroll" ref={scrollRef}>
           {messages.map((msg, i) => (
-            <div key={i} className={`chat-bubble ${msg.role === "user" ? "user" : "ai"}`}>
+            <div
+              key={i}
+              className={`chat-bubble ${msg.role === "user" ? "user" : "ai"}`}
+            >
               {msg.content}
             </div>
           ))}
@@ -328,7 +339,10 @@ Your behavior:
             }
             disabled={attemptsLeft <= 0 || currency <= 0}
           />
-          <button onClick={handleSend} disabled={loading || attemptsLeft <= 0 || currency <= 0}>
+          <button
+            onClick={handleSend}
+            disabled={loading || attemptsLeft <= 0 || currency <= 0}
+          >
             <span>➤</span>
           </button>
         </div>
