@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/app.css";
-import storytellerImg from "../assets/images/storytelerr.png"; // your image file
+import storytellerImg from "../assets/images/storytelerr.png";
 import bgShape from "../assets/images/bg-shape.png";
 import mapCard from "../assets/images/map-card.png";
 import { useNavigate } from "react-router-dom";
@@ -47,7 +47,7 @@ export default function Home() {
                 onClick={() => navigate("/daily-challenge")}
               >
                 Play
-              </button>
+          </button>
         </div>
       </section>
 
