@@ -29,6 +29,7 @@ const Chatbot = () => {
     {
       name: "Wendigo",
       descriptors: [
+        "Gender: Male",
         "Spirit of hunger",
         "Gaunt and skeletal",
         "Eyes glow with starvation",
@@ -44,6 +45,7 @@ const Chatbot = () => {
     {
       name: "Dokkaebi",
       descriptors: [
+        "Gender: Male",
         "Goblin spirit of Korea",
         "Mischievous and playful",
         "One-legged and horned",
@@ -59,6 +61,7 @@ const Chatbot = () => {
     {
       name: "Skinwalker",
       descriptors: [
+        "Gender: Neither",
         "Navajo witch",
         "Steals the form of animals",
         "Eyes glow in the dark",
@@ -74,6 +77,7 @@ const Chatbot = () => {
     {
       name: "Chupacabra",
       descriptors: [
+        "Gender: Neither",
         "Blood-sucking beast",
         "Attacks livestock at night",
         "Red glowing eyes",
@@ -89,6 +93,7 @@ const Chatbot = () => {
     {
       name: "Baba Yaga",
       descriptors: [
+        "Gender: Female",
         "Old witch of the woods",
         "Iron teeth and bony legs",
         "Flies in a mortar and pestle",
@@ -101,7 +106,120 @@ const Chatbot = () => {
         "Half-helper, half-horror",
       ],
     },
+    {
+      name: "Anansi",
+      descriptors: [
+        "Gender: Male",
+        "Spider trickster from West Africa",
+        "Weaver of stories and lies",
+        "Clever, charming, and deceitful",
+        "Uses wit to outsmart gods and men",
+        "Symbol of knowledge and rebellion",
+        "Often takes human form with spider traits",
+        "Father figure in many tales",
+        "Loves riddles and bargains",
+        "Bringer of wisdom to humankind",
+        "Lives where stories are born",
+      ],
+    },
+    {
+      name: "Inkanyamba",
+      descriptors: [
+        "Gender: Male",
+        "Giant serpent spirit from South Africa",
+        "Dwells beneath waterfalls and rivers",
+        "Summons storms and whirlwinds",
+        "Body long as thunderclouds",
+        "Eyes that flash with lightning",
+        "Protector of sacred waters",
+        "Bringer of rain and destruction",
+        "Feared by those who see it",
+        "Worshipped and respected by healers",
+        "Never seen in calm weather",
+      ],
+    },
+    {
+      name: "Adze",
+      descriptors: [
+        "Gender: Neither",
+        "Ewe vampire spirit from West Africa",
+        "Takes the form of a firefly at night",
+        "Feeds on blood and life essence",
+        "Enters homes through cracks or keyholes",
+        "Brings sickness and misfortune",
+        "Can possess humans if captured",
+        "Weakens those it feeds on slowly",
+        "Glows faintly blue when near victims",
+        "Hates the sound of chanting and light",
+        "Both spirit and curse of envy",
+      ],
+    },
+    {
+      name: "Leshy",
+      descriptors: [
+        "Gender: Male",
+        "Forest guardian of Slavic lore",
+        "Tall as trees or small as a twig",
+        "Bearded and crowned with leaves",
+        "Skin tinted with moss and bark",
+        "Voice echoes like wind through branches",
+        "Can lead travelers astray",
+        "Protects animals and sacred groves",
+        "Trickster but not truly evil",
+        "Laughs with the sound of rustling trees",
+        "Punishes disrespect toward nature",
+      ],
+    },
+    {
+      name: "Bereginya",
+      descriptors: [
+        "Gender: Female",
+        "Slavic river and fertility spirit",
+        "Protector of women and children",
+        "Embodies the nurturing power of water",
+        "Hair flows like the river current",
+        "Sings songs to soothe the weary",
+        "Guardian against evil spirits",
+        "Brings blessings to homes and fields",
+        "Appears near lakes at dawn or dusk",
+        "Symbol of life, purity, and rebirth",
+        "Spirit of both motherhood and mystery",
+      ],
+    },
+    {
+      name: "Manananggal",
+      descriptors: [
+        "Gender: Female",
+        "Vampiric aswang of the Philippines",
+        "Separates her upper body from the lower half at night",
+        "Flies with bat-like wings",
+        "Feeds on unborn children and sleeping humans",
+        "Avoids garlic, salt, and sunlight",
+        "Can disguise herself as a beautiful woman",
+        "Must return to her lower half before dawn",
+        "Her scream foretells death",
+        "Leaves behind a trail of darkness",
+        "Dies if her lower half is found and salted",
+      ],
+    },
+    {
+      name: "Al Duwais",
+      descriptors: [
+        "Gender: Female",
+        "Jinn of madness from Arabian folklore",
+        "Haunts deserts and lonely travelers",
+        "Appears as a beautiful woman or hideous hag",
+        "Eyes of burning coal and teeth of obsidian",
+        "Feeds on fear and confusion",
+        "Whispers insanity into wandering souls",
+        "Known to dance under the desert moon",
+        "Cannot enter holy ground",
+        "Vanished with the sunrise",
+        "The echo of nightmares made flesh",
+      ],
+    },
   ];
+
 
   // 🌘 Daily legend
   const [dailyLegend, setDailyLegend] = useState(null);
