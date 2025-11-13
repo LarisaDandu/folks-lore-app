@@ -53,7 +53,7 @@ export default function TopBar() {
   const searchRef = useRef(null);
   const topbarUserRef = useRef(null);
 
-  // compute menu width (used to move the user icon with it)
+  // calc menu width (to move the user icon with it)
   const [menuWidthPx, setMenuWidthPx] = useState(0);
   useEffect(() => {
     function calc() {
@@ -98,7 +98,6 @@ export default function TopBar() {
   // handlers
   const handleSendSearch = () => {
     console.log("Search for:", searchValue);
-    // navigate(`/search?q=${encodeURIComponent(searchValue)}`);
   };
 
   const handleToggleLoginMock = () => {

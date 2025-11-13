@@ -182,7 +182,7 @@ export default function Story() {
               <div className="avatar" />
               <div className="bubble">
                 <h4>@samsung_lover</h4>
-                <p>This reminds me of how my grandma used to tell stories </p>
+                <p>That's not right! She only eats kids who displease her. </p>
                 <div className="post-icons"> 
                     <button className="icon-btn" type="button" >
                 <img src={heartIcon} alt="Like" /> 
@@ -201,7 +201,7 @@ export default function Story() {
               <div className="avatar small" />
               <div className="bubble small">
                 <h5>@gabspol</h5>
-                <p>the what now?!</p>
+                <p>Ong, my grandma used to say that too.</p>
               </div>
             </div>
           </div>

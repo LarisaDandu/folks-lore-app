@@ -12,7 +12,7 @@ export default function BottomNav() {
   const location = useLocation();
   const [active, setActive] = useState(location.pathname);
 
-  // 🔄 Update active tab whenever route changes
+  //Update active tab whenever route changes
   useEffect(() => {
     setActive(location.pathname);
   }, [location.pathname]);
