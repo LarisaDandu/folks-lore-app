@@ -1,0 +1,251 @@
+@import url("./app.css");
+
+.onboarding-wrapper {
+  background: #08101B;
+  color: #DBDDF5;
+  min-height: 100vh;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: "Poppins", sans-serif;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.skip {
+  color: #56FFF6;
+  cursor: pointer;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 10px;
+
+  background: linear-gradient(90deg, #5095FD, #56FFF6);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.text {
+  margin: 12px auto;
+  max-width: 85%;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+.onboard-image {
+  width: 80%;
+  margin: 40px auto 20px;
+  display: block;
+}
+
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.next-btn {
+  background: linear-gradient(90deg, #5095FD, #56FFF6);
+  border-radius: 30px;
+  padding: 12px 26px;
+  border: none;
+  color: #08101B;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid #5095FD;
+  color: #5095FD;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #ffffff30;
+  border-radius: 50%;
+}
+
+.dot.active {
+  background: #56FFF6;
+  box-shadow: 0 0 6px rgba(86,255,246,0.8);
+}
+
+.genre-grid {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+.genre-btn {
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  background: transparent;
+  border: 2px solid #56FFF6;
+  color: #DBDDF5;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.genre-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(86,255,246,0.25);
+}
+
+.genre-btn.selected {
+  background: linear-gradient(90deg, #5095FD, #56FFF6);
+  border: none;
+  color: #08101B;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(86,255,246,0.35);
+}
+
+
+.signup-box {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.signup-box input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid #5095FD;
+  padding: 12px;
+  border-radius: 10px;
+  color: white;
+}
+
+.signup-button {
+  margin-top: 10px;
+  background: #5095FD;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  color: #08101B;
+  font-weight: 700;
+}
+
+.onboard-logo {
+  width: 120px;
+  height: auto;
+  filter: drop-shadow(0 0 8px rgba(86,255,246,0.4));
+}
+
+.title {
+  text-align: center;
+}
+.text {
+  text-align: center;
+}
+
+.swap-auth {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #b8baf2;
+}
+
+.swap-link {
+  color: #56FFF6;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 4px;
+}
+.swap-link:hover {
+  text-decoration: underline;
+}
+
+.fire-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.fire-glow-welcome {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(
+    circle,
+    rgba(255,150,80,0.7) 0%,
+    rgba(255,100,30,0.45) 40%,
+    rgba(255,50,10,0.25) 70%,
+    transparent 100%
+  );
+  filter: blur(50px);
+  animation: firePulseWelcome 3s ease-in-out infinite;
+  border-radius: 50%;
+  top: 40%;
+  z-index: -1;
+}
+
+@keyframes firePulseWelcome {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+.fade-container {
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+
+/* Disabled auth buttons */
+.signup-button.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.fire-first {
+  animation: none !important;
+}
+
+.fire-glow-welcome.always-show {
+  opacity: 1;
+  animation-delay: 0ms !important;
+}
